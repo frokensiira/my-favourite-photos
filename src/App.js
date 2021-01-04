@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import './assets/App.scss';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap'
+import logo from './assets/logo.svg'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	return (
+		<>
+			<Navbar bg="dark" variant="dark">
+				<Container>
+					<Navbar.Brand href="/">
+						<img
+							alt="A photoalbum"
+							src={logo}
+							width="30"
+							height="30"
+							className="d-inline-block align-top"
+						/>{' '}
+						My Favourite Photos
+					</Navbar.Brand>
+
+					<Navbar.Toggle aria-controls="basic-navbar-nav" />
+					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav className="ml-auto">
+							<Nav.Link href="/albums">Mina album</Nav.Link>
+							<NavDropdown title="Användare" id="basic-nav-dropdown">
+								<NavDropdown.Item href="/my-profile">Min profil</NavDropdown.Item>
+								<NavDropdown.Divider />
+								<NavDropdown.Item href="/logout">Logga ut</NavDropdown.Item>
+							</NavDropdown>
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
+
+			<Container>
+				Startsida
+			</Container>
+		</>
+	)
 }
+
 
 export default App;
