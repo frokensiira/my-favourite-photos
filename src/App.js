@@ -5,10 +5,11 @@ import Home from './components/Home';
 import NavigationBar from './components/NavigationBar';
 import NotFound from './components/NotFound';
 import SignUp from './components/SignUp';
+import AuthContextProvider from './contexts/AuthContext';
 
 const App = () => {
 	return (
-		<>
+		<AuthContextProvider>
 			<NavigationBar/>
 
 			<Container className="py-3">
@@ -26,7 +27,7 @@ const App = () => {
 				</Routes>
 
 			</Container>
-		</>
+		</AuthContextProvider>
 	)
 }
 
