@@ -29,7 +29,8 @@ const NavigationBar = () => {
                                     ? (
                                         <>
                                             <NavLink to="/albums" className="nav-link">Mina album</NavLink>
-                                            <NavDropdown title="Användare" id="basic-nav-dropdown">
+                                            <NavLink to="/albums/create-album" className="nav-link">Skapa album</NavLink>
+                                            <NavDropdown title={currentUser.email} id="basic-nav-dropdown">
                                                 <NavLink to="/my-profile" className="dropdown-item">Min profil</NavLink>
                                                 <NavDropdown.Divider />
                                                 <NavLink to="/logout" className="dropdown-item">Logga ut</NavLink>

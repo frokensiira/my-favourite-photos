@@ -52,7 +52,7 @@ const Login = () => {
                         </Card.Body>
                     </Card>
                     <div className="text-center mt-2">
-                        Har du inget ett konto?<Link to="/signup">Skapa konto</Link>
+                        Har du inget ett konto? <Link to="/signup">Skapa konto</Link>
                     </div>
                 </Col>
             </Row>

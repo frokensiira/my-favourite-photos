@@ -38,17 +38,18 @@ const App = () => {
 					</Route>
 
 					<AuthRoute path="/albums">
-						<AuthRoute path="/">
+						<Route path="/">
 							<Albums/>
-						</AuthRoute>
+						</Route>
 
-						<AuthRoute path="/:albumId">
+						<Route path="/:albumId">
 							<Album/>
-						</AuthRoute>
+						</Route>
 
-						<AuthRoute path="/createAlbum">
+						<Route path="/create-album">
 							<CreateAlbum/>
-						</AuthRoute>
+						</Route>
+
 					</AuthRoute>
 
 					<Route path="*" element={<NotFound/>}/>
