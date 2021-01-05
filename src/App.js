@@ -1,7 +1,9 @@
 import './assets/App.scss';
 import { Container } from 'react-bootstrap';
 import { Route, Routes } from 'react-router-dom';
+import AuthRoute from './components/AuthRoute';
 import Home from './components/Home';
+import Login from './components/Login';
 import NavigationBar from './components/NavigationBar';
 import NotFound from './components/NotFound';
 import SignUp from './components/SignUp';
@@ -15,8 +17,12 @@ const App = () => {
 			<Container className="py-3">
 
 				<Routes>
-					<Route path="/">
+					<AuthRoute path="/">
 						<Home/>
+					</AuthRoute>
+
+					<Route path="/login">
+						<Login/>
 					</Route>
 
 					<Route path="/signup">
