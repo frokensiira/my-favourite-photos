@@ -9,6 +9,9 @@ import NotFound from './components/NotFound';
 import SignUp from './components/SignUp';
 import Logout from './components/Logout';
 import AuthContextProvider from './contexts/AuthContext';
+import Albums from './components/Albums';
+import Album from './components/Album';
+import CreateAlbum from './components/CreateAlbum';
 
 const App = () => {
 	return (
@@ -33,6 +36,20 @@ const App = () => {
 					<Route path="/signup">
 						<SignUp/>
 					</Route>
+
+					<AuthRoute path="/albums">
+						<AuthRoute path="/">
+							<Albums/>
+						</AuthRoute>
+
+						<AuthRoute path="/:albumId">
+							<Album/>
+						</AuthRoute>
+
+						<AuthRoute path="/createAlbum">
+							<CreateAlbum/>
+						</AuthRoute>
+					</AuthRoute>
 
 					<Route path="*" element={<NotFound/>}/>
 				</Routes>
