@@ -12,14 +12,22 @@ const AuthContextProvider = (props) => {
     const [currentUser, setCurrentUser ] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const signup = (email, password) => {
+    const signUp = (email, password) => {
         console.log(`Email ${email} and Password ${password}`);
         return auth.createUserWithEmailAndPassword(email, password)
     }
 
+    const login = (email, password) => {
+        console.log(`Email ${email} and Password ${password}`);
+        return auth.signInWithEmailAndPassword(email, password)
+    }
+
+    const logout = () => {
+        return auth.signOut();
+    }
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
-            console.log('Auth state changed', user);
             setCurrentUser(user);
             setLoading(false);
         });
@@ -30,7 +38,9 @@ const AuthContextProvider = (props) => {
     const values = {
         currentUser, 
         loading,
-        signup
+        signUp, 
+        login,
+        logout
     }
 
     return (

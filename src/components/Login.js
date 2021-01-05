@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
     const emailRef = useRef();
@@ -8,12 +9,21 @@ const Login = () => {
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        try {
+            setLoading(true)
+            await login(emailRef.current.value, passwordRef.current.value);
+            navigate('/');
+        } catch (error) {
+            setError(error.message)
+			setLoading(false)
+        }
     }
-    
+
     return (  
         <div>
             <Row>
@@ -42,7 +52,7 @@ const Login = () => {
                         </Card.Body>
                     </Card>
                     <div className="text-center mt-2">
-                        Har du inget ett konto? <Link to="/signup">Skapa konto</Link>
+                        Har du inget ett konto?<Link to="/signup">Skapa konto</Link>
                     </div>
                 </Col>
             </Row>

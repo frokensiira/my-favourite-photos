@@ -5,27 +5,25 @@ import { Link, NavLink } from 'react-router-dom';
 
 const NavigationBar = () => {
     const { currentUser } = useAuth();
+
     return ( 
         <header>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Link to="/">
-                        <Navbar.Brand href="/">
-                            <img
-                                alt="A photoalbum"
-                                src={logo}
-                                width="30"
-                                height="30"
-                                className="d-inline-block align-top"
-                            />{' '}
-                            My Favourite Photos
-                        </Navbar.Brand>
+                    <Link to="/" className="navbar-brand">
+                        <img
+                            alt="A photoalbum"
+                            src={logo}
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                        />{' '}
+                        My Favourite Photos
                     </Link>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
-                            
                             {
                                 currentUser
                                     ? (
@@ -40,7 +38,6 @@ const NavigationBar = () => {
                                     )
                                     : ''
                             }
-                            
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

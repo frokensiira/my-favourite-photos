@@ -7,6 +7,7 @@ import Login from './components/Login';
 import NavigationBar from './components/NavigationBar';
 import NotFound from './components/NotFound';
 import SignUp from './components/SignUp';
+import Logout from './components/Logout';
 import AuthContextProvider from './contexts/AuthContext';
 
 const App = () => {
@@ -23,6 +24,10 @@ const App = () => {
 
 					<Route path="/login">
 						<Login/>
+					</Route>
+
+					<Route path="/logout">
+						<Logout/>
 					</Route>
 
 					<Route path="/signup">

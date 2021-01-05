@@ -10,7 +10,7 @@ const SignUp = () => {
     const passwordConfirmRef = useRef();
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { signup } = useAuth();
+    const { signUp } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -24,7 +24,7 @@ const SignUp = () => {
 
         try {
             setLoading(true);
-            await signup(emailRef.current.value, passwordRef.current.value);
+            await signUp(emailRef.current.value, passwordRef.current.value);
             navigate('/');
         } catch (error) {
             setError(error.message);
