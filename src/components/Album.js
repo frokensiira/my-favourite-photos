@@ -2,9 +2,12 @@ import { useParams } from 'react-router-dom';
 
 const Album = () => {
     const { albumId } = useParams();
+    
+    
     return (  
-        <div>
-            Album component
+        <div className="text-center">
+            <h1>Album component </h1>
+            <p>with id: {albumId}</p>
         </div>
     );
 }

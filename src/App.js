@@ -12,6 +12,7 @@ import AuthContextProvider from './contexts/AuthContext';
 import Albums from './components/Albums';
 import Album from './components/Album';
 import CreateAlbum from './components/CreateAlbum';
+//import CustomerAlbum from './components/CustomerAlbum';
 
 const App = () => {
 	return (
