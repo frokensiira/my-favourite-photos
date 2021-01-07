@@ -37,7 +37,7 @@ const NavigationBar = () => {
                                             </NavDropdown>
                                         </>
                                     )
-                                    : ''
+                                    : <NavLink to="/signup" className="nav-link">Skapa konto</NavLink>
                             }
                         </Nav>
                     </Navbar.Collapse>

@@ -1,64 +1,26 @@
-import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { db, storage } from '../firebase';
-import { useAuth } from '../contexts/AuthContext';
 import { FadeLoader } from 'react-spinners';
+import useUploadFile from '../hooks/useUploadFile';
+import DropzoneUpload from './DropzoneUpload';
 
 const CreateAlbum = () => {
-    const titleRef = useRef();
-    const [error, setError ] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [file, setFile] = useState(null);
-    const { currentUser } = useAuth();
-    const navigate = useNavigate();
+    const [uploadFile, setUploadFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [albumTitle, setAlbumTitle] = useState('');
 
-    const handleFileChange = e => {
-        setFile(e.target.files[0]);
+    const handleChangeTitle = (e) => {
+        setAlbumTitle(e.target.value);
     }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setError(false);
-        setLoading(true);
-
-        const storageRef = storage.ref();
-
-        const fileRef = storageRef.child(`${titleRef.current.value}/${file.name}`);
-
-        try {
-            // Get file url
-            const snapshot = await fileRef.put(file);
-            const url = await snapshot.ref.getDownloadURL();
-
-            const docRef = await db.collection('albums').add({
-                title: titleRef.current.value,
-                path: snapshot.ref.fullPath,
-                owner: currentUser.uid,
-                fileUrl: url, 
-                type: file.type,
-                size: file.size
-            })
-
-            navigate(`/albums/${docRef.id}`);
-
-        } catch(error) {
-            setError(error.message);
+        if(!file){
+            return;
         }
-
-
-
-        /* try {
-            const docRef = await db.collection('albums').add({
-            title: titleRef.current.value,
-            owner: currentUser.uid
-        }).then()
-            navigate(`/albums/${docRef.id}`);
-        } catch (error) {
-            setError(error.message)
-			setLoading(false)
-        } */
+        setLoading(true);
+        setUploadFile(file);
     }
 
     return (  
@@ -77,19 +39,13 @@ const CreateAlbum = () => {
                                 Skapa album
                             </Card.Title>
 
-                            {error && (<Alert variant="danger">{error}</Alert>)}
+                            {/* {error && (<Alert variant="danger">{error}</Alert>)} */}
 
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group id="title">
                                     <Form.Label>Albumtitel</Form.Label>
-                                    <Form.Control type="title" ref={titleRef} required/>
-                                    <Form.File 
-                                        id="upload-file" 
-                                        label="Ladda upp foto" 
-                                        custom
-                                        className="mt-3"
-                                        onChange={handleFileChange}
-                                    />
+                                    <Form.Control type="title" value={albumTitle} required onChange={handleChangeTitle}/>
+                                    <DropzoneUpload albumTitle={albumTitle}/>
                                     
                                 </Form.Group>
 
@@ -106,3 +62,4 @@ const CreateAlbum = () => {
 }
  
 export default CreateAlbum;
+

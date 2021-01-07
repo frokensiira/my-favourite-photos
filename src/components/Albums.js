@@ -14,12 +14,14 @@ const Albums = () => {
         //subscribe to album snapshots from firebase to update component whenever something changes
         const unsubscribe = db.collection('albums')
             .where('owner', '==', currentUser.uid)
-            .orderBy('title')
+            .orderBy('albumTitle')
             .onSnapshot(snapshot => {
+                console.log('this is snapshot', snapshot);
                 setLoading(true);
                 const snapshotAlbums = [];
 
                 snapshot.forEach(doc => {
+                    console.log('this is doc.data()', doc.data());
                     snapshotAlbums.push({
                         id: doc.id,
                         ...doc.data()
