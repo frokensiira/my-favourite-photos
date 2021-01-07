@@ -2,19 +2,19 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { db, storage } from '../firebase';
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/AuthContext';
+import { FadeLoader } from 'react-spinners';
 
 const CreateAlbum = () => {
     const titleRef = useRef();
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [photo, setPhoto] = useState(null);
-    const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+    const [file, setFile] = useState(null);
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
     const handleFileChange = e => {
-        setPhoto(e.target.files[0]);
+        setFile(e.target.files[0]);
     }
 
     const handleSubmit = async (e) => {
@@ -25,31 +25,20 @@ const CreateAlbum = () => {
 
         const storageRef = storage.ref();
 
-        const photoRef = storageRef.child(`${titleRef.current.value}/${photo.name}`);
-
-        /* const uploadTask = photoRef.put(photo);
-        console.log('uploadtask 1:', uploadTask); */
-
-        //get snapshot of the uploaded file
-        /* uploadTask.then(snapshot => {
-            console.log('this is snapshot', snapshot);
-            snapshot.ref.getDownloadURL().then(url => {
-                setUploadedImageUrl(url)
-            })
-        }).catch(error => {
-            setError(error.message);
-        }) */
+        const fileRef = storageRef.child(`${titleRef.current.value}/${file.name}`);
 
         try {
-            // Get photo url
-            const snapshot = await photoRef.put(photo);
+            // Get file url
+            const snapshot = await fileRef.put(file);
             const url = await snapshot.ref.getDownloadURL();
-            setUploadedImageUrl(url);
 
             const docRef = await db.collection('albums').add({
                 title: titleRef.current.value,
+                path: snapshot.ref.fullPath,
                 owner: currentUser.uid,
-                photo: url
+                fileUrl: url, 
+                type: file.type,
+                size: file.size
             })
 
             navigate(`/albums/${docRef.id}`);
@@ -74,6 +63,12 @@ const CreateAlbum = () => {
 
     return (  
         <div>
+
+            {
+                loading && (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
+            }
+            
+
            <Row>
                 <Col md={{ span: 6, offset: 3}}>
                     <Card>
@@ -89,7 +84,7 @@ const CreateAlbum = () => {
                                     <Form.Label>Albumtitel</Form.Label>
                                     <Form.Control type="title" ref={titleRef} required/>
                                     <Form.File 
-                                        id="upload-photo" 
+                                        id="upload-file" 
                                         label="Ladda upp foto" 
                                         custom
                                         className="mt-3"
@@ -98,11 +93,7 @@ const CreateAlbum = () => {
                                     
                                 </Form.Group>
 
-                                {photo && (<p>This is the file: {photo.name}, size {photo.size}</p>)}
-
-                                {
-                                    uploadedImageUrl && (<img src={uploadedImageUrl} className='img-fluid'/>)
-                                }
+                                {file && (<p>This is the file: {file.name}, size {file.size}</p>)}
 
                                 <Button disabled={loading} type="submit">Skapa album</Button>
                             </Form>
