@@ -9,13 +9,15 @@ const DropzoneUpload = ({albumTitle}) => {
         if(acceptedFiles.length === 0){
             return;
         }
-        setUploadFile(acceptedFiles[0])
+        setUploadFile(acceptedFiles[0]);
     }, []);
 
     const { getRootProps, getInputProps, isDragActive, acceptedFiles, isDragAccept, isDragReject } = useDropzone({
         accept: 'image/jpeg, image/png',
         onDrop
     });
+
+
 
     return (  
         <div {...getRootProps()} id="dropzone-wrapper" className={`px-4 py-4 my-3 ${isDragAccept ? `drag-accept` : ``} ${isDragReject ? `drag-reject` : ``}`}>
@@ -33,7 +35,10 @@ const DropzoneUpload = ({albumTitle}) => {
                     <div className="accepted-files mt-2">
                         <ul className="list-unstyled">
                             {acceptedFiles.map(file => (
-                                <li key={file.name}>{file.name}</li>
+                                <li key={file.name}>
+                                    {/* <img src={URL.createObjectURL(file)} className="img-fluid w-25" alt="preview"/> */}
+                                    {file.name}
+                                </li>
                             ))}
                         </ul>   
                     </div>

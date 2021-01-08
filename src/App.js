@@ -12,51 +12,53 @@ import AuthContextProvider from './contexts/AuthContext';
 import Albums from './components/Albums';
 import Album from './components/Album';
 import CreateAlbum from './components/CreateAlbum';
+import SimpleReactLightbox from 'simple-react-lightbox';
 //import CustomerAlbum from './components/CustomerAlbum';
 
 const App = () => {
 	return (
 		<AuthContextProvider>
-			<NavigationBar/>
+			<SimpleReactLightbox>
+				<NavigationBar/>
+				<Container className="py-3">
 
-			<Container className="py-3">
+					<Routes>
+						<AuthRoute path="/">
+							<Home/>
+						</AuthRoute>
 
-				<Routes>
-					<AuthRoute path="/">
-						<Home/>
-					</AuthRoute>
-
-					<Route path="/login">
-						<Login/>
-					</Route>
-
-					<Route path="/logout">
-						<Logout/>
-					</Route>
-
-					<Route path="/signup">
-						<SignUp/>
-					</Route>
-
-					<AuthRoute path="/albums">
-						<Route path="/">
-							<Albums/>
+						<Route path="/login">
+							<Login/>
 						</Route>
 
-						<Route path="/:albumId">
-							<Album/>
+						<Route path="/logout">
+							<Logout/>
 						</Route>
 
-						<Route path="/create-album">
-							<CreateAlbum/>
+						<Route path="/signup">
+							<SignUp/>
 						</Route>
 
-					</AuthRoute>
+						<AuthRoute path="/albums">
+							<Route path="/">
+								<Albums/>
+							</Route>
 
-					<Route path="*" element={<NotFound/>}/>
-				</Routes>
+							<Route path="/:albumId">
+								<Album/>
+							</Route>
 
-			</Container>
+							<Route path="/create-album">
+								<CreateAlbum/>
+							</Route>
+
+						</AuthRoute>
+
+						<Route path="*" element={<NotFound/>}/>
+					</Routes>
+
+				</Container>
+			</SimpleReactLightbox>
 		</AuthContextProvider>
 	)
 }

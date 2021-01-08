@@ -57,7 +57,7 @@ const Albums = () => {
                                             <Card className="mb-3">
                                                 <Card.Img variant="top" src="https://image.shutterstock.com/image-vector/no-image-available-icon-template-600w-1036735678.jpg"/>
                                                 <Card.Body>
-                                                    <Card.Title className="text-center">{album.title}</Card.Title>
+                                                    <Card.Title className="text-center">{album.albumTitle}</Card.Title>
                                                     <Card.Text>Länk till kund: 1234</Card.Text>
                                                     <Link to={`/albums/${album.id}`}>
                                                         <Button variant="primary" size="sm">Till album</Button>
