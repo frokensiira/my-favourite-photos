@@ -1,10 +1,7 @@
 import { Alert, Button, Card, Col, Form, ProgressBar, Row } from 'react-bootstrap';
 import { FadeLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
-import { useEffect, useState, useCallback } from 'react';
-import { db, storage } from '../firebase';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, useCallback } from 'react';
 import useUploadAlbum from '../hooks/useUploadAlbum';
 
 const CreateAlbum = () => {

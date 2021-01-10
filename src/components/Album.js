@@ -6,43 +6,11 @@ import { Row } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import Photo from './Photo';
 import { SRLWrapper } from 'simple-react-lightbox';
+import useAlbum from '../hooks/useAlbum';
 
 const Album = () => {
     const { albumId } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [photos, setPhotos] = useState([]);
-    const [albumTitle, setAlbumTitle] = useState('');
-    const { currentUser, logout } = useAuth();
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        //subscribe to album snapshots from firebase to update component whenever something changes
-        db.collection('albums')
-        .doc(albumId)
-        .get().then(doc => {      
-            setAlbumTitle(doc.data().albumTitle)
-            const unsubscribe = db.collection('photos')
-            .where('albumTitle', '==', doc.data().albumTitle)
-            .onSnapshot( snapshot => {
-                setLoading(true);
-                const snapshotPhotos = [];
-
-                snapshot.forEach(doc => {
-                    snapshotPhotos.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                setPhotos(snapshotPhotos);
-                
-                setLoading(false);
-            })
-
-            return unsubscribe;
-        })
-        
-        
-    }, [albumId, currentUser.uid, logout, navigate])
+    const { albumTitle, loading, photos } = useAlbum(albumId);
     
     return (  
         <div className="text-center">
