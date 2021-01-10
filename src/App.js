@@ -13,6 +13,7 @@ import Albums from './components/Albums';
 import Album from './components/Album';
 import CreateAlbum from './components/CreateAlbum';
 import SimpleReactLightbox from 'simple-react-lightbox';
+import CustomerAlbum from './components/CustomerAlbum';
 //import CustomerAlbum from './components/CustomerAlbum';
 
 const App = () => {
@@ -53,6 +54,10 @@ const App = () => {
 							</Route>
 
 						</AuthRoute>
+
+						<Route path="/customerAlbum/:albumId">
+							<CustomerAlbum/>
+						</Route>
 
 						<Route path="*" element={<NotFound/>}/>
 					</Routes>

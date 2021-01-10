@@ -20,6 +20,7 @@ const useAlbum = (albumId) => {
             const unsubscribe = db.collection('photos')
             .where('albumTitle', '==', doc.data().albumTitle)
             .onSnapshot( snapshot => {
+                console.log('this is snapshot', snapshot);
                 setLoading(true);
                 const snapshotPhotos = [];
 
