@@ -1,51 +1,72 @@
-/* 
-import { useEffect, useState } from 'react';
 import { db, storage } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const uploadedFilesArray = [];
+const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
 
-const useUploadFile = (albumTitle, file) => {
     const [error, setError ] = useState(null);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [albumId, setAlbumId] = useState(null);
+    const [loading, setLoading] = useState(false);
     const { currentUser } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if(!file){
+
+        if(uploadedFiles.length === 0){
             return;
         }
 
-        const fileRef = storage.ref(`${albumTitle}/${file.name}`);
+        const album = {
+            albumTitle,
+            owner: currentUser.uid,
+        }
 
-        const uploadTask = fileRef.put(file);
+        const albumRef = storage.ref(`${albumTitle}`);
 
-        uploadTask.then(snapshot => {
-            console.log('this is snapshot', snapshot);
-            snapshot.ref.getDownloadURL().then(url => {
-                console.log('this is url', url);
-                db.collection('albums').add({
-                    name: file.name,
+        const promises = uploadedFiles.map(async uploadedFile => {
+            setLoading(true);
+
+            try {
+
+                const fileRef = albumRef.child(`/${uploadedFile.name}`);
+                const snapshot = await fileRef.put(uploadedFile);    
+                
+                const url = await snapshot.ref.getDownloadURL();
+
+                const photo = {
+                    name: uploadedFile.name,
                     albumTitle,
                     path: snapshot.ref.fullPath,
                     owner: currentUser.uid,
                     fileUrl: url, 
-                    type: file.type,
-                    size: file.size
-                }).then(doc => {
-                    //fileRef.updateMetadata({ customMetadata: {firestoreId: doc.id}});
-                    setAlbumId(doc.id)
-                    console.log('this is doc.id', doc.id);
+                    type: uploadedFile.type,
+                    size: uploadedFile.size
+                }
+
+                const result = await db.collection('photos').add(photo);
+
+                return new Promise((resolve, reject) => {resolve(result)})
+
+            } catch(error) {
+                setError(error.message);
+            }
+
+        })
+
+        Promise.all(promises)
+            .then(() => {
+                db.collection('albums').add(album)
+                .then(doc => {
+                    setLoading(false);
+                    navigate(`/albums/${doc.id}`);
                 });
+            }).catch (error => {
+                setError(error.message);
             });
-        }).catch(error=> {
-            console.log('this is error', error);
-            setError(error.message);
-        });
 
-    }, [file]);
+    }, [submit]);
 
-    return { error, currentUser, albumId };
+    return { error, loading };
 }
- 
-export default useUploadFile; */
+
+export default useUploadAlbum;
