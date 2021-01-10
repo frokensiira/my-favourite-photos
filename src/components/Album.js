@@ -17,30 +17,31 @@ const Album = () => {
     
     useEffect(() => {
         //subscribe to album snapshots from firebase to update component whenever something changes
-        const unsubscribe = db.collection('albums')
-            .doc(albumId)
-            .onSnapshot(async doc => {
+        db.collection('albums')
+        .doc(albumId)
+        .get().then(doc => {      
+            setAlbumTitle(doc.data().albumTitle)
+            const unsubscribe = db.collection('photos')
+            .where('albumTitle', '==', doc.data().albumTitle)
+            .onSnapshot( snapshot => {
                 setLoading(true);
-                //make sure the user owns the photo
-                if(currentUser.uid === doc.data().owner) {
-                    const snapshotPhotos = [];
-                    snapshotPhotos.push({
-                        id: doc.data().name,
-                        url: doc.data().fileUrl,
-                        size: doc.data().size, 
-                        name: doc.data().name
-                    })
-                    setAlbumTitle(doc.data().albumTitle);
-                    setPhotos(snapshotPhotos);
-                    setLoading(false);
-                } else {
-                    await logout()
-                    navigate('/login')
-                }
-                
-        });
+                const snapshotPhotos = [];
 
-        return unsubscribe;
+                snapshot.forEach(doc => {
+                    snapshotPhotos.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                setPhotos(snapshotPhotos);
+                
+                setLoading(false);
+            })
+
+            return unsubscribe;
+        })
+        
+        
     }, [albumId, currentUser.uid, logout, navigate])
     
     return (  

@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
+/* import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import useUploadFile from '../hooks/useUploadFile';
+import useUploadAlbum from '../hooks/useUploadAlbum';
 
 const DropzoneUpload = ({albumTitle}) => {
-    const [uploadFile, setUploadFile] = useState();
-    const { error } = useUploadFile(albumTitle, uploadFile);
+    const [uploadFile, setUploadFile] = useState(null);
+    const [message, setMessage] = useState(null);
+    useUploadAlbum(albumTitle, uploadFile);
+    
     const onDrop = useCallback(acceptedFiles => {
         if(acceptedFiles.length === 0){
             return;
@@ -36,7 +38,7 @@ const DropzoneUpload = ({albumTitle}) => {
                         <ul className="list-unstyled">
                             {acceptedFiles.map(file => (
                                 <li key={file.name}>
-                                    {/* <img src={URL.createObjectURL(file)} className="img-fluid w-25" alt="preview"/> */}
+                                    
                                     {file.name}
                                 </li>
                             ))}
@@ -49,4 +51,4 @@ const DropzoneUpload = ({albumTitle}) => {
     );
 }
  
-export default DropzoneUpload;
+export default DropzoneUpload; */

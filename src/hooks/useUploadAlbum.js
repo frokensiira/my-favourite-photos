@@ -1,13 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+/* 
 import { useEffect, useState } from 'react';
 import { db, storage } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 
+const uploadedFilesArray = [];
+
 const useUploadFile = (albumTitle, file) => {
     const [error, setError ] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [albumId, setAlbumId] = useState(null);
     const { currentUser } = useAuth();
-    const navigate = useNavigate();
 
     useEffect(() => {
         if(!file){
@@ -16,11 +18,12 @@ const useUploadFile = (albumTitle, file) => {
 
         const fileRef = storage.ref(`${albumTitle}/${file.name}`);
 
-        // Get file url
         const uploadTask = fileRef.put(file);
 
         uploadTask.then(snapshot => {
+            console.log('this is snapshot', snapshot);
             snapshot.ref.getDownloadURL().then(url => {
+                console.log('this is url', url);
                 db.collection('albums').add({
                     name: file.name,
                     albumTitle,
@@ -30,18 +33,19 @@ const useUploadFile = (albumTitle, file) => {
                     type: file.type,
                     size: file.size
                 }).then(doc => {
-                    fileRef.updateMetadata({ customMetadata: {firestoreId: doc.id}});
-                    navigate(`/albums/${doc.id}`);
+                    //fileRef.updateMetadata({ customMetadata: {firestoreId: doc.id}});
+                    setAlbumId(doc.id)
+                    console.log('this is doc.id', doc.id);
                 });
             });
         }).catch(error=> {
-            console.log(error);
+            console.log('this is error', error);
             setError(error.message);
         });
 
     }, [file]);
 
-    return { error, loading, currentUser };
+    return { error, currentUser, albumId };
 }
  
-export default useUploadFile;
+export default useUploadFile; */
