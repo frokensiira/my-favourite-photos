@@ -1,16 +1,10 @@
-import { ButtonGroup, Card, Col, Form, ToggleButton  } from 'react-bootstrap';
+import { ButtonGroup, Card, Col, ToggleButton  } from 'react-bootstrap';
 import { useState } from 'react';
 
 
 const CustomerPhoto = ({photo, handleReviewButtons}) => {
 
-    //const [radioValue, setRadioValue] = useState('1');
     const [radioValue, setRadioValue] = useState('like');
-
-    /* const radios = [
-        { name: 'Gillar 👍', value: '1' },
-        { name: 'Gillar inte 👎', value: '2' },
-    ]; */
 
     const radios = [
         { name: 'Gillar 👍', value: 'like' },

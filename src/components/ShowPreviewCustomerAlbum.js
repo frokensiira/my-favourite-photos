@@ -1,35 +1,43 @@
 import React from 'react';
-import useAlbum from '../hooks/useAlbum';
-import { FadeLoader } from 'react-spinners';
-import { useParams, Link } from 'react-router-dom';
-import { Button, Row } from 'react-bootstrap';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import { Button, Col, Row } from 'react-bootstrap';
 import { SRLWrapper } from 'simple-react-lightbox';
-
+import PreviewPhoto from './PreviewPhoto';
 
 const ShowPreviewCustomerAlbum = () => {
-    const { albumId } = useParams();
-    const { albumTitle, loading, photos } = useAlbum(albumId);
+    const { albumId, ownerId } = useParams();
+    const { state } = useLocation(); 
+
+    const newTitle = `${state.albumTitle} - kundvalda`;
+
     return (
-        <div>
-            <h1 className="text-center">{albumTitle}</h1>
-            <p>Du har valt X antal bilder av totalt Y</p>
-            {
-                loading
-                    ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
+        <div className="text-center">
+            <h1 className="text-center">{newTitle}</h1>
+            <p>Du har valt {state.likedPhotos.length} {state.likedPhotos.length > 1 ? 'bilder' : 'bild'} av totalt {state.total}</p>
+
+            <SRLWrapper>
+                <h2>Valda bilder</h2>
+                <Row className="mb-5">
+                        
+                        {
+                            state.likedPhotos.map(photo => (
+                                <PreviewPhoto photo={photo} key={photo.id} />
+                        ))}    
+                        
+                </Row>
+                        <h2>Bortvalda bilder</h2>
+                <Row className="mb-5">
+                        {
+                            state.dislikedPhotos.map(photo => (
+                                <PreviewPhoto photo={photo} key={photo.id} />
+                        ))}  
+                        
+
+                </Row>
+                <Link to={`/${ownerId}/review/${albumId}`} className="btn btn-primary">Redigera</Link>
+                <Button variant="secondary">Bekräfta</Button>
+            </SRLWrapper>
                     
-                    : (
-                        <SRLWrapper>
-                            <Row className="mb-5">
-                                <h2>Valda bilder</h2>
-                                <ul></ul>
-                                <h2>Bortvalda bilder</h2>
-                                <ul></ul>
-                                <Link to={`/review/${albumId}`} className="btn btn-primary">Redigera</Link>
-                                <Button variant="secondary">Bekräfta</Button>
-                            </Row>
-                        </SRLWrapper>
-                    )
-            }
         </div>
     )
 }
