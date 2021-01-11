@@ -61,53 +61,9 @@ const Album = () => {
             return;
         }
 
-        
-
-        //get a list of the photos shown in the album
-        /* db.collection('albums')
-        .doc(albumId)
-        .get().then(doc => {      
-            //setAlbumTitle(doc.data().albumTitle)
-            const unsubscribe = db.collection('photos')
-            .where('albumTitle', '==', doc.data().albumTitle)
-            .onSnapshot( snapshot => {
-                console.log('this is snapshot', snapshot);
-                //setLoading(true);
-                const snapshotPhotos = [];
-
-                snapshot.forEach(doc => {
-                    snapshotPhotos.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                setCurrentPhotos(snapshotPhotos);
-                
-                //setLoading(false);
-            })
-
-            return unsubscribe;
-        }) */
-
-        /* const storageRef = storage.ref();
-
-        const listRef = storageRef.child('Tezzzzt');
-
-        const res = await listRef.listAll();
-
-        res.prefixes.forEach(function(itemRef) {
-            // All the items under listRef.
-            console.log('this is itemRef', itemRef);
-        }); */
-
-        //setSubmit(true);
-
         if(pickedPhotos.length === 0){
             return;
         }
-        //console.log('this is pickedPhotos', pickedPhotos);
-
-        return;
 
         const album = {
             newAlbumTitle,

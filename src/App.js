@@ -55,7 +55,7 @@ const App = () => {
 
 						</AuthRoute>
 
-						<Route path="/customerAlbum/:albumId">
+						<Route path="/review/:albumId">
 							<CustomerAlbum/>
 						</Route>
 
