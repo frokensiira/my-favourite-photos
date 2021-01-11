@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
-    //console.log('this is albumTitle', albumTitle);
-    console.log('this is uploadedFiles', uploadedFiles);
-    //console.log('this is submit', submit);
 
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -36,7 +33,6 @@ const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
                 const snapshot = await fileRef.put(uploadedFile);    
                 
                 const url = await snapshot.ref.getDownloadURL();
-                console.log('this is url', url);
 
                 const photo = {
                     name: uploadedFile.name,

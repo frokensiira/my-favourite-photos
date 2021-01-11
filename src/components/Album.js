@@ -13,11 +13,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Album = () => {
     const { albumId } = useParams();
-    const { albumTitle, loading, photos } = useAlbum(albumId);
-    const [newAlbumTitle, setNewAlbumTitle] = useState();
+    const { albumTitle, loading, setLoading, photos, validUser } = useAlbum(albumId);
+    const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [pickedPhotos, setPickedPhotos] = useState([]);
-    const [submit, setSubmit] = useState(null);
-    const [currentPhotos, setCurrentPhotos] = useState([]);
+
     //useUploadAlbum(newAlbumTitle, pickedPhotos, submit)
 
     const [error, setError ] = useState(null);
@@ -25,38 +24,23 @@ const Album = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
-    const newPhoto = new File(['hej'], 'testfil.jpg', {
-        type: 'image/jpg'
-    });
-
-    console.log('this is newPhoto', newPhoto);
-
     const handleCheckBox = (e) => {
-        console.log('someone wants to check me out');
-        console.log(e.target.checked);
-        console.log(e.target.id);
-
         const [image] = photos.filter(photo =>  (photo.id === e.target.id));
 
-        console.log('this is image', image);
         if(e.target.checked === true) {
-            console.log('yes, its checked');
             setPickedPhotos(photos => [...photos, image]);
         } else {
-            console.log('now its unchecked');
             const updatedPhotoArray = pickedPhotos.filter(photo =>  (photo.id !== e.target.id))
             setPickedPhotos(updatedPhotoArray);
         }
     }
 
     const handleInputChange = (e) => {
-        //console.log('this is input', e.target.value);
-        setNewAlbumTitle( e.target.value);
+        setNewAlbumTitle(e.target.value);
     }
 
     const handleSubmit = async () => {
-        console.log('someone wants to submit something');
-        console.log('this is albumTitle', newAlbumTitle);
+
         if(!newAlbumTitle) {
             return;
         }
@@ -66,32 +50,21 @@ const Album = () => {
         }
 
         const album = {
-            newAlbumTitle,
+            albumTitle: newAlbumTitle,
             owner: currentUser.uid,
         }
-
-        const albumRef = storage.ref(`${albumTitle}`);
-
-        const promises = pickedPhotos.map(async uploadedFile => {
-            //setLoading(true);
-
+        
+        const promises = pickedPhotos.map(async pickedPhoto => {
+            setLoading(true);
             try {
-
-                const fileRef = albumRef.child(`/${uploadedFile.name}`);
-                console.log('this is fileRef', fileRef);
-                const snapshot = await fileRef.put(uploadedFile);    
-                console.log('this is snapshot', snapshot);
-                const url = await snapshot.ref.getDownloadURL();
-                console.log('this is url', url);
-
                 const photo = {
-                    name: uploadedFile.name,
+                    name: pickedPhoto.name,
                     albumTitle: newAlbumTitle,
-                    path: snapshot.ref.fullPath,
+                    path: pickedPhoto.path,
                     owner: currentUser.uid,
-                    fileUrl: url, 
-                    type: uploadedFile.type,
-                    size: uploadedFile.size
+                    fileUrl: pickedPhoto.fileUrl, 
+                    type: pickedPhoto.type,
+                    size: pickedPhoto.size
                 }
 
                 const result = await db.collection('photos').add(photo);
@@ -109,8 +82,9 @@ const Album = () => {
             .then(() => {
                 db.collection('albums').add(album)
                 .then(doc => {
-                    //setLoading(false);
-                    console.log('this is doc.id', doc.id);
+                    setLoading(false);
+                    setPickedPhotos([]);
+                    setNewAlbumTitle('');
                     navigate(`/albums/${doc.id}`);
                 });
             }).catch (error => {
@@ -120,38 +94,47 @@ const Album = () => {
     
     return (  
         <div className="text-center">
-            <h1 className="text-center">{albumTitle}</h1>
-            <p>Länk till kund: </p>
-                
-                    {
-                        loading
-                            ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
-                            
-                            : (
-                                <SRLWrapper>
-                                    <Row className="mb-5">
-                                        {photos.map(photo => (
-                                            <Photo photo={photo} key={photo.id} handleCheckBox={handleCheckBox}/>
-                                        ))}
-                                    </Row>
-                                </SRLWrapper>
-                            )
-                    }
 
+            {
+                !validUser 
+                    ? (<p>You don't have access to this album</p>) 
+                    : (
+                        <>
+                            <h1 className="text-center">{albumTitle}</h1>
+                            <p>Länk till kund: </p>
                     
-                        <Row>
-                            <Col md={{ span: 6, offset: 3}}>
-                                <Form>
-                                    <Form.Group>
-                                        <Form.Label>Ange albumets titel:</Form.Label>
-                                        <Form.Control required type="name" placeholder="Titel" onChange={handleInputChange}/>
-                                        </Form.Group>
-                                    <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
-                                </Form>
-                            </Col>
-                        </Row>
+                            {
+                                loading
+                                    ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
+                                    
+                                    : (
+                                        <SRLWrapper>
+                                            <Row className="mb-5">
+                                                {photos.map(photo => (
+                                                    <Photo photo={photo} key={photo.id} handleCheckBox={handleCheckBox}/>
+                                                ))}
+                                            </Row>
+                                        </SRLWrapper>
+                                    )
+                            }
+
                         
-                    
+                            <Row>
+                                <Col md={{ span: 6, offset: 3}}>
+                                    <Form>
+                                        <Form.Group>
+                                            <Form.Label>Ange albumets titel:</Form.Label>
+                                            <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
+                                            </Form.Group>
+                                        <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                                    </Form>
+                                </Col>
+                            </Row>
+                        </>
+                )
+            }
+
+            
                 
         </div>
     );

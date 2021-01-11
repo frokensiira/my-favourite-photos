@@ -8,6 +8,7 @@ const useAlbum = (albumId) => {
     const [loading, setLoading] = useState(true);
     const [photos, setPhotos] = useState([]);
     const [albumTitle, setAlbumTitle] = useState('');
+    const [validUser, setValidUser] = useState(false);
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
@@ -15,12 +16,13 @@ const useAlbum = (albumId) => {
         //subscribe to album snapshots from firebase to update component whenever something changes
         db.collection('albums')
         .doc(albumId)
-        .get().then(doc => {      
+        .get().then(doc => {     
             setAlbumTitle(doc.data().albumTitle)
             const unsubscribe = db.collection('photos')
             .where('albumTitle', '==', doc.data().albumTitle)
+            .where('owner', '==', currentUser.uid)
             .onSnapshot( snapshot => {
-                console.log('this is snapshot', snapshot);
+                //console.log('this is snapshot', snapshot);
                 setLoading(true);
                 const snapshotPhotos = [];
 
@@ -30,8 +32,11 @@ const useAlbum = (albumId) => {
                         ...doc.data()
                     });
                 });
-                setPhotos(snapshotPhotos);
-                
+                //check if the user owns the photos
+                if(snapshotPhotos.length !== 0) {
+                    setPhotos(snapshotPhotos);
+                    setValidUser(true);
+                } 
                 setLoading(false);
             })
 
@@ -40,7 +45,7 @@ const useAlbum = (albumId) => {
 
     }, [albumId, currentUser.uid, navigate]);
 
-    return { albumTitle, loading, photos };
+    return { albumTitle, loading, setLoading, photos, validUser };
 }
  
 export default useAlbum;
