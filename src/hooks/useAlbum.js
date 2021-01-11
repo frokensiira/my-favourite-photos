@@ -3,13 +3,13 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
-const useAlbum = (albumId) => {
+const useAlbum = (albumId, user) => {
 
     const [loading, setLoading] = useState(true);
     const [photos, setPhotos] = useState([]);
     const [albumTitle, setAlbumTitle] = useState('');
     const [validUser, setValidUser] = useState(false);
-    const { currentUser } = useAuth();
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const useAlbum = (albumId) => {
             setAlbumTitle(doc.data().albumTitle)
             const unsubscribe = db.collection('photos')
             .where('albumTitle', '==', doc.data().albumTitle)
-            .where('owner', '==', currentUser.uid)
+            .where('owner', '==', user)
             .onSnapshot( snapshot => {
                 //console.log('this is snapshot', snapshot);
                 setLoading(true);
@@ -43,7 +43,7 @@ const useAlbum = (albumId) => {
             return unsubscribe;
         })
 
-    }, [albumId, currentUser.uid, navigate]);
+    }, [albumId, navigate]);
 
     return { albumTitle, loading, setLoading, photos, validUser };
 }

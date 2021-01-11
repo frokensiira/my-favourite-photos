@@ -10,15 +10,15 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Album = () => {
-
+    const { currentUser } = useAuth();
     const { albumId } = useParams();
-    const { albumTitle, loading, setLoading, photos, validUser } = useAlbum(albumId);
+    const { albumTitle, loading, setLoading, photos, validUser } = useAlbum(albumId, currentUser.uid);
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [pickedPhotos, setPickedPhotos] = useState([]);
     const [customerLink, setCustomerLink] = useState('');
 
     const [error, setError ] = useState(null);
-    const { currentUser } = useAuth();
+    
     const navigate = useNavigate();
 
     const handleCheckBox = (e) => {

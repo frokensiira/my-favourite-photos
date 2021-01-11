@@ -18,7 +18,6 @@ const AuthContextProvider = (props) => {
     }
 
     const login = (email, password) => {
-        console.log(`Email ${email} and Password ${password}`);
         return auth.signInWithEmailAndPassword(email, password)
     }
 

@@ -1,35 +1,42 @@
 import CustomerPhoto from './CustomerPhoto';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FadeLoader } from 'react-spinners';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
+import useAlbum from '../hooks/useAlbum';
+import { useNavigate } from 'react-router-dom';
 
 const CustomerAlbum = () => {
     const { ownerId, albumId } = useParams();
     const [loading, setLoading] = useState(false);
-    const [radioValue, setRadioValue] = useState('1');
-    const [likedPhotos, setLikedPhotos] = useState();
-    console.log('this is ownerId', ownerId);
-    console.log('this is albumId', albumId);
-    const handleReviewButtons = (e) => {
-        console.log('this is e.target.value', e.target.value);
-        console.log('someone clicked me', e.target.labels[0].id);
+    const { photos } = useAlbum(albumId, ownerId);
 
-        //const [image] = photos.filter(photo => (photo.id === e.target.id));
+    const [likedPhotos, setLikedPhotos] = useState(photos);
+    const [disLikedPhotos, setDisLikedPhotos] = useState([]);
 
-        if(e.target.value === 'like') {
-            console.log('I like this photo');
-            //setLikedPhotos(photos => [...photos, image]);
-        } else if (e.target.value === 'dislike') {
-            console.log('I do not like this photo');
-        } else {
-            console.log('something went wrong');
+    useEffect(() => {
+        setLikedPhotos(photos);
+    }, [photos]);
+
+    const handleReviewButtons = (review, photoId) => {
+
+        if(review === 'dislike') {
+            const updatedPhotos = likedPhotos.filter(photo => photo.id !== photoId);
+            setLikedPhotos(updatedPhotos);
         }
+
     }
 
-    const handleSubmit = () => {
+    const handleSubmitToPreview = () => {
+        let dislikedPhotos = [];
+        likedPhotos.forEach(likedPhoto => {
+            dislikedPhotos = photos.filter(photo =>  likedPhoto.id !== photo.id)
+        })
 
+        console.log('this is dislikedPhotos', dislikedPhotos);
+        setDisLikedPhotos(dislikedPhotos);
+        Navigate('/')
     }
 
     return (  
@@ -45,8 +52,9 @@ const CustomerAlbum = () => {
 
                                 <SRLWrapper>
                                     <Row className="mb-5">
-                                        
-                                        <CustomerPhoto handleReviewButtons={handleReviewButtons}/>
+                                    {photos.map(photo => (
+                                            <CustomerPhoto photo={photo} key={photo.id}  handleReviewButtons={handleReviewButtons}/>
+                                        ))}
                                     
                                     </Row>
                                 </SRLWrapper>
@@ -58,7 +66,7 @@ const CustomerAlbum = () => {
                     <Row>
                         <Col md={{ span: 6, offset: 3}}>
                             <Form>
-                                <Button onClick={handleSubmit}>Skicka album till fotograf</Button>
+                                <Button onClick={handleSubmitToPreview}>Förhandsgranska</Button>
                             </Form>
                         </Col>
                     </Row>
