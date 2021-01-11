@@ -3,12 +3,15 @@ import { SRLWrapper } from 'simple-react-lightbox';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useState } from 'react';
 import { FadeLoader } from 'react-spinners';
+import { useParams } from 'react-router-dom';
 
 const CustomerAlbum = () => {
+    const { ownerId, albumId } = useParams();
     const [loading, setLoading] = useState(false);
     const [radioValue, setRadioValue] = useState('1');
     const [likedPhotos, setLikedPhotos] = useState();
-
+    console.log('this is ownerId', ownerId);
+    console.log('this is albumId', albumId);
     const handleReviewButtons = (e) => {
         console.log('this is e.target.value', e.target.value);
         console.log('someone clicked me', e.target.labels[0].id);
@@ -30,7 +33,7 @@ const CustomerAlbum = () => {
     }
 
     return (  
-        <div>
+        <div className="text-center">
             {/* <h1 className="text-center">{albumTitle}</h1> */}
             <h1 className="text-center">Kundalbum</h1>
                 
@@ -51,6 +54,7 @@ const CustomerAlbum = () => {
                                 
                             )
                     }
+
                     <Row>
                         <Col md={{ span: 6, offset: 3}}>
                             <Form>

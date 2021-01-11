@@ -14,7 +14,7 @@ import Album from './components/Album';
 import CreateAlbum from './components/CreateAlbum';
 import SimpleReactLightbox from 'simple-react-lightbox';
 import CustomerAlbum from './components/CustomerAlbum';
-//import CustomerAlbum from './components/CustomerAlbum';
+import ShowPreviewCustomerAlbum from './components/ShowPreviewCustomerAlbum';
 
 const App = () => {
 	return (
@@ -54,10 +54,15 @@ const App = () => {
 							</Route>
 
 						</AuthRoute>
-
-						<Route path="/review/:albumId">
+						
+						<Route path=":ownerId/review/:albumId">
 							<CustomerAlbum/>
 						</Route>
+
+						<AuthRoute path="/review/preview/:albumId">
+							<ShowPreviewCustomerAlbum/>
+						</AuthRoute>
+
 
 						<Route path="*" element={<NotFound/>}/>
 					</Routes>

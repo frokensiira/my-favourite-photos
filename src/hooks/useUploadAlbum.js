@@ -7,7 +7,6 @@ const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
 
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [customerLink, setCustomerLink] = useState('');
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
@@ -59,7 +58,6 @@ const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
                 db.collection('albums').add(album)
                 .then(doc => {
                     setLoading(false);
-                    console.log('this is doc.id', doc.id);
                     navigate(`/albums/${doc.id}`);
                 });
             }).catch (error => {

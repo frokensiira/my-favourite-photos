@@ -3,6 +3,7 @@ import useAlbum from '../hooks/useAlbum';
 import { FadeLoader } from 'react-spinners';
 import { useParams, Link } from 'react-router-dom';
 import { Button, Row } from 'react-bootstrap';
+import { SRLWrapper } from 'simple-react-lightbox';
 
 
 const ShowPreviewCustomerAlbum = () => {

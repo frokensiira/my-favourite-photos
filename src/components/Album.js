@@ -5,22 +5,19 @@ import Photo from './Photo';
 import { SRLWrapper } from 'simple-react-lightbox';
 import useAlbum from '../hooks/useAlbum';
 import { useState } from 'react';
-//import useUploadAlbum from '../hooks/useUploadAlbum';
-
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Album = () => {
+
     const { albumId } = useParams();
     const { albumTitle, loading, setLoading, photos, validUser } = useAlbum(albumId);
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [pickedPhotos, setPickedPhotos] = useState([]);
-
-    //useUploadAlbum(newAlbumTitle, pickedPhotos, submit)
+    const [customerLink, setCustomerLink] = useState('');
 
     const [error, setError ] = useState(null);
-    //const [loading, setLoading] = useState(false);
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
@@ -37,6 +34,10 @@ const Album = () => {
 
     const handleInputChange = (e) => {
         setNewAlbumTitle(e.target.value);
+    }
+
+    const handleGenerateLink = () => {
+        setCustomerLink(`${window.location.origin}/${currentUser.uid}/review/${albumId}`);
     }
 
     const handleSubmit = async () => {
@@ -85,6 +86,7 @@ const Album = () => {
                     setLoading(false);
                     setPickedPhotos([]);
                     setNewAlbumTitle('');
+                    //setCustomerLink(`${window.location.origin}/${currentUser.uid}/review/${doc.id}`);
                     navigate(`/albums/${doc.id}`);
                 });
             }).catch (error => {
@@ -96,13 +98,23 @@ const Album = () => {
         <div className="text-center">
 
             {
-                !validUser 
+                !validUser && !loading
                     ? (<p>You don't have access to this album</p>) 
                     : (
                         <>
                             <h1 className="text-center">{albumTitle}</h1>
-                            <p>Länk till kund: </p>
-                    
+
+                            <Button className="my-3" onClick={handleGenerateLink} variant="primary">Generera kundlänk</Button>
+                            {
+                                customerLink && 
+                                (
+                                    <div className="my-4">
+                                        <a href={customerLink}>{customerLink}</a>
+                                    </div>
+                                    
+                                )
+                            }
+
                             {
                                 loading
                                     ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
@@ -125,7 +137,7 @@ const Album = () => {
                                         <Form.Group>
                                             <Form.Label>Ange albumets titel:</Form.Label>
                                             <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
-                                            </Form.Group>
+                                        </Form.Group>
                                         <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
                                     </Form>
                                 </Col>
