@@ -30,12 +30,14 @@ const CustomerAlbum = () => {
     }
 
     const handleSubmitToPreview = () => {
-        let dislikedPhotos = [];
-        likedPhotos.forEach(likedPhoto => {
-            dislikedPhotos = photos.filter(photo =>  likedPhoto.id !== photo.id)
-        })
+
+        const spreaded = [...likedPhotos, ...photos];
+        const dislikedPhotos = spreaded.filter(el => {
+            return !(likedPhotos.includes(el) && photos.includes(el));
+        });
 
         setDisLikedPhotos(dislikedPhotos);
+
         navigate(`/${ownerId}/review/preview/${albumId}`, {state: {likedPhotos, dislikedPhotos, albumTitle, total: photos.length}});
     }
 
@@ -58,7 +60,6 @@ const CustomerAlbum = () => {
                                     </Row>
                                 </SRLWrapper>
 
-                                
                             )
                     }
 
