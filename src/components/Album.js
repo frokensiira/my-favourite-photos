@@ -86,7 +86,6 @@ const Album = () => {
                     setLoading(false);
                     setPickedPhotos([]);
                     setNewAlbumTitle('');
-                    //setCustomerLink(`${window.location.origin}/${currentUser.uid}/review/${doc.id}`);
                     navigate(`/albums/${doc.id}`);
                 });
             }).catch (error => {

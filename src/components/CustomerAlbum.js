@@ -31,6 +31,12 @@ const CustomerAlbum = () => {
 
     const handleSubmitToPreview = () => {
 
+        if(likedPhotos.length === 0){
+            alert('Du måste välja minst ett foto')
+            console.log('You have to choose at least one photo');
+            return;
+        }
+
         const spreaded = [...likedPhotos, ...photos];
         const dislikedPhotos = spreaded.filter(el => {
             return !(likedPhotos.includes(el) && photos.includes(el));

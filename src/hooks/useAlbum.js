@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
