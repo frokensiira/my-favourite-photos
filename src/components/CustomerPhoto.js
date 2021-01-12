@@ -24,7 +24,7 @@ const CustomerPhoto = ({photo, handleReviewButtons}) => {
                     <Card.Img variant="top" src={photo.fileUrl}/>
                 </a>
                 <Card.Body>
-                    <ButtonGroup  required>
+                    <ButtonGroup required>
                     {radios.map((radio, id) => (
                         <ToggleButton
                             key={id}

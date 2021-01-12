@@ -7,7 +7,7 @@ import useAlbum from '../hooks/useAlbum';
 import { useState } from 'react';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Album = () => {
     const { currentUser } = useAuth();
@@ -30,6 +30,17 @@ const Album = () => {
             const updatedPhotoArray = pickedPhotos.filter(photo =>  (photo.id !== e.target.id))
             setPickedPhotos(updatedPhotoArray);
         }
+    }
+
+    const handleEditAlbum = () => {
+        navigate(`/albums/edit-album/${albumId}`, {
+            state : {
+                photos,
+                albumTitle
+            }
+        })
+
+        
     }
 
     const handleInputChange = (e) => {
@@ -138,6 +149,13 @@ const Album = () => {
                                             <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
                                         </Form.Group>
                                         <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                                    </Form>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={{ span: 6, offset: 3}}>
+                                    <Form>
+                                        <Button className="my-4" variant="secondary" onClick={handleEditAlbum}>Redigera album</Button>
                                     </Form>
                                 </Col>
                             </Row>

@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Col, Form, ProgressBar, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { FadeLoader } from 'react-spinners';
 import { useDropzone } from 'react-dropzone';
 import { useState, useCallback } from 'react';

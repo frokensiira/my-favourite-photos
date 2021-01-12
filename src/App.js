@@ -16,6 +16,7 @@ import SimpleReactLightbox from 'simple-react-lightbox';
 import CustomerAlbum from './components/CustomerAlbum';
 import CustomerConfirmation from './components/CustomerConfirmation';
 import ShowPreviewCustomerAlbum from './components/ShowPreviewCustomerAlbum';
+import EditAlbum from './components/EditAlbum';
 
 const App = () => {
 	return (
@@ -52,6 +53,10 @@ const App = () => {
 
 							<Route path="/create-album">
 								<CreateAlbum/>
+							</Route>
+
+							<Route path="/edit-album/:albumId">
+								<EditAlbum/>
 							</Route>
 
 						</AuthRoute>
