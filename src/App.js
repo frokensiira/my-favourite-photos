@@ -17,6 +17,7 @@ import CustomerAlbum from './components/CustomerAlbum';
 import CustomerConfirmation from './components/CustomerConfirmation';
 import ShowPreviewCustomerAlbum from './components/ShowPreviewCustomerAlbum';
 import EditAlbum from './components/EditAlbum';
+import AccessDenied from './components/AccessDenied';
 
 const App = () => {
 	return (
@@ -71,6 +72,10 @@ const App = () => {
 
 						<Route path="/confirmation">
 							<CustomerConfirmation/>
+						</Route>
+
+						<Route path="/403">
+							<AccessDenied/>
 						</Route>
 
 						<Route path="*" element={<NotFound/>}/>

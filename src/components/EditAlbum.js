@@ -91,9 +91,10 @@ const EditAlbum = () => {
                 }
     
             })
-    
+            
         }
         
+        navigate(`/albums/${albumId}`);
     }
 
     //Dropzone

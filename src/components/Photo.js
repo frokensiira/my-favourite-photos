@@ -1,9 +1,7 @@
 import { Button, Card, Col, Form  } from 'react-bootstrap';
-import { useState } from 'react';
-//import useDeleteFile from '../hooks/useDeleteFile'
 
-const Photo = ({photo, handleCheckBox}) => {
-    //console.log('this is photo', photo);
+const Photo = ({photo, handleCheckBox, handleDeletePhoto}) => {
+
     return (  
         <Col sm={6} md={4} lg={3}>                                
             <Card className="mb-3">
@@ -17,7 +15,7 @@ const Photo = ({photo, handleCheckBox}) => {
                         </Form.Group>
                     </Form>
 
-                    {/* <Button variant="danger" size="sm" onClick={handleDeletePhoto}>Radera</Button> */}
+                    <Button variant="danger" size="sm" onClick={handleDeletePhoto} id={photo.id}>Radera</Button>
                 </Card.Body>
             </Card>
         </Col>

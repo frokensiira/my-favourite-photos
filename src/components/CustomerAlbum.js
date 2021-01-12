@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 const CustomerAlbum = () => {
     const { albumId, ownerId } = useParams();
-    const [loading, setLoading] = useState(false);
-    const { photos, albumTitle } = useAlbum(albumId, ownerId);
+    //const [loading, setLoading] = useState(true);
+    const { photos, albumTitle, loading } = useAlbum(albumId, ownerId);
     const navigate = useNavigate();
 
     const [likedPhotos, setLikedPhotos] = useState(photos);

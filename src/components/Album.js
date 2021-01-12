@@ -5,17 +5,18 @@ import Photo from './Photo';
 import { SRLWrapper } from 'simple-react-lightbox';
 import useAlbum from '../hooks/useAlbum';
 import { useState } from 'react';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Album = () => {
     const { currentUser } = useAuth();
     const { albumId } = useParams();
-    const { albumTitle, loading, setLoading, photos, validUser } = useAlbum(albumId, currentUser.uid);
+    const { albumTitle, loading, setLoading, photos } = useAlbum(albumId, currentUser.uid);
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [pickedPhotos, setPickedPhotos] = useState([]);
     const [customerLink, setCustomerLink] = useState('');
+
 
     const [error, setError ] = useState(null);
     
@@ -38,7 +39,41 @@ const Album = () => {
                 photos,
                 albumTitle
             }
-        })
+        })        
+    }
+
+    const handleDeletePhoto = async (e) => {
+
+        try {
+
+            //check the name of the photo
+            const doc = await db.collection('photos').doc(e.target.id).get();
+
+            const querySnapshot = await db.collection("photos")
+                .where('name', '==', doc.data().name)
+                .where('owner', '==', currentUser.uid)
+                .get()
+            
+            const snapshotPhotos = [];
+            querySnapshot.forEach(function(doc) {
+                console.log(doc.id, " => ", doc.data());
+                snapshotPhotos.push(doc.id);
+            });
+            
+            console.log('this is snapshotPhotos', snapshotPhotos);
+
+            await db.collection('photos').doc(e.target.id).delete();
+            console.log('deleted photo from db');
+
+            if(snapshotPhotos.length < 2) {
+                await storage.ref(doc.data().path).delete();
+                console.log('this photo was the last one, now deleted file from storage');
+            }
+
+        } catch (error) {
+            console.log('this is error', error);
+            console.log('this is error.message', error.message);
+        }
 
         
     }
@@ -106,64 +141,61 @@ const Album = () => {
     
     return (  
         <div className="text-center">
+                <h1 className="text-center">{albumTitle}</h1>
 
-            {
-                !validUser && !loading
-                    ? (<p>You don't have access to this album</p>) 
-                    : (
-                        <>
-                            <h1 className="text-center">{albumTitle}</h1>
-
-                            <Button className="my-3" onClick={handleGenerateLink} variant="primary">Generera kundlänk</Button>
-                            {
-                                customerLink && 
-                                (
-                                    <div className="my-4">
-                                        <a href={customerLink}>{customerLink}</a>
-                                    </div>
-                                    
-                                )
-                            }
-
-                            {
-                                loading
-                                    ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
-                                    
-                                    : (
-                                        <SRLWrapper>
-                                            <Row className="mb-5">
-                                                {photos.map(photo => (
-                                                    <Photo photo={photo} key={photo.id} handleCheckBox={handleCheckBox}/>
-                                                ))}
-                                            </Row>
-                                        </SRLWrapper>
-                                    )
-                            }
-
+                {
+                    photos.length !== 0 && (
+                        <Button className="my-3" onClick={handleGenerateLink} variant="primary">Generera kundlänk</Button>)
+                }
+                {
+                    customerLink && 
+                    (
+                        <div className="my-4">
+                            <a href={customerLink}>{customerLink}</a>
+                        </div>
                         
-                            <Row>
-                                <Col md={{ span: 6, offset: 3}}>
-                                    <Form>
-                                        <Form.Group>
-                                            <Form.Label>Ange albumets titel:</Form.Label>
-                                            <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
-                                        </Form.Group>
-                                        <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
-                                    </Form>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={{ span: 6, offset: 3}}>
-                                    <Form>
-                                        <Button className="my-4" variant="secondary" onClick={handleEditAlbum}>Redigera album</Button>
-                                    </Form>
-                                </Col>
-                            </Row>
-                        </>
-                )
-            }
+                    )
+                }
 
-            
+                {
+                    loading
+                        ? (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)
+                        
+                        : (
+                            <SRLWrapper>
+                                <Row className="mb-5">
+                                    {photos.map(photo => (
+                                        <Photo photo={photo} key={photo.id} handleCheckBox={handleCheckBox} handleDeletePhoto={handleDeletePhoto}/>
+                                    ))}
+                                </Row>
+                            </SRLWrapper>
+                        )
+                }
+
+                {
+                    photos.length !== 0 && (
+                        <Row>
+                    <Col md={{ span: 6, offset: 3}}>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>Ange albumets titel:</Form.Label>
+                                <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
+                            </Form.Group>
+                            <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                        </Form>
+                    </Col>
+                </Row>
+                    )
+                }
+                
+
+                <Row>
+                    <Col md={{ span: 6, offset: 3}}>
+                        <Form>
+                            <Button className="my-4" variant="secondary" onClick={handleEditAlbum}>Redigera album</Button>
+                        </Form>
+                    </Col>
+                </Row>  
                 
         </div>
     );
