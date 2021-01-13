@@ -22,7 +22,7 @@ body:after {
     z-index: -1;
 }
 
-.bg-card-user {
+.bg-card-login {
     /* position: absolute;
     top: 50%;
     left: 50%; */
@@ -31,11 +31,16 @@ body:after {
     padding: 60px 32px;
     background: rgba(255,255,255,0.04);
     box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
+    position: relative;
+    color: white;
 }
 
-.bg-card-user {
+.bg-card-signup {
+    text-align: center;
+    padding: 60px 32px;
+    background: rgba(255,255,255,0.04);
+    box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
     position: relative;
-    
     color: white;
 }
 
@@ -49,12 +54,12 @@ body:after {
 
 .card-input-field {
     background: transparent;
-    color: #222;
+    color: white;
     font-family: 'Poppins', sans-serif;
 }
 
-.btn-login {
-    
+.btn-user {
+    background-color: #2691d9;
 }
 
 

@@ -36,9 +36,9 @@ const SignUp = () => {
         <div>
             <Row>
                 <Col md={{ span: 6, offset: 3}}>
-                    <Card>
+                    <Card className="bg-card-signup">
                         <Card.Body>
-                            <Card.Title>
+                            <Card.Title className="card-title">
                                 Skapa konto
                             </Card.Title>
 
@@ -47,26 +47,24 @@ const SignUp = () => {
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label htmlFor="email">Email</Form.Label>
-                                    <Form.Control type="email" ref={emailRef} id="email" required/>
+                                    <Form.Control className="card-input-field" type="email" ref={emailRef} id="email" required/>
                                 </Form.Group>
 
                                 <Form.Group>
                                     <Form.Label htmlFor="password">Lösenord</Form.Label>
-                                    <Form.Control type="password" ref={passwordRef} id="password" required/>
+                                    <Form.Control className="card-input-field" type="password" ref={passwordRef} id="password" required/>
                                 </Form.Group>
 
                                 <Form.Group >
                                     <Form.Label htmlFor="password-confirm">Upprepa lösenord</Form.Label>
-                                    <Form.Control type="password" ref={passwordConfirmRef} id="password-confirm" required/>
+                                    <Form.Control className="card-input-field" type="password" ref={passwordConfirmRef} id="password-confirm" required/>
                                 </Form.Group>
 
-                                <Button disabled={loading} type="submit">Skapa konto</Button>
+                                <Button disabled={loading} className="btn-user my-4 px-5" type="submit">Skapa konto</Button>
                             </Form>
+                            <p>Har du redan ett konto? <Link to="/login">Logga in</Link></p>
                         </Card.Body>
                     </Card>
-                    <div className="text-center mt-2">
-                        Har du redan ett konto? <Link to="/login">Logga in</Link>
-                    </div>
                 </Col>
             </Row>
             

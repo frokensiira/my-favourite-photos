@@ -31,7 +31,7 @@ const Login = () => {
         <div>
             <Row>
                 <Col md={{ span: 6, offset: 3}}>
-                    <Card className="bg-card-user">
+                    <Card className="bg-card-login">
                         <Card.Body className="card-body">
                             <Card.Title className="card-title">
                                 Logga in
@@ -44,21 +44,20 @@ const Login = () => {
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="2"><FontAwesomeIcon icon={faUser}/></Form.Label>
                                     
-                                    <Col sm="10">
+                                    <Col className="px-0 mr-5">
                                         <Form.Control className="card-input-field" type="email" ref={emailRef} placeholder="Email" required/>
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="2"><FontAwesomeIcon icon={faUnlockAlt}/></Form.Label>
-                                    
-                                    <Col sm="10">
+                                    <Col className="px-0 mr-5">
                                         <Form.Control className="card-input-field" type="password" ref={passwordRef} required placeholder="Lösenord"/>
                                     </Col>
                                 </Form.Group>
                                 </Container>
 
-                                <Button disabled={loading} type="submit" className="btn-login my-4">Logga in</Button>
+                                <Button disabled={loading} type="submit" className="btn-user my-4 px-5">Logga in</Button>
                             </Form>
                             <p>Har du inget ett konto? <Link to="/signup">Skapa konto</Link></p>
                         </Card.Body>
