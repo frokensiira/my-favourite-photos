@@ -129,7 +129,6 @@ const Album = () => {
             .then(() => {
                 db.collection('albums').add(album)
                 .then(doc => {
-                    setLoading(false);
                     setPickedPhotos([]);
                     setNewAlbumTitle('');
                     navigate(`/albums/${doc.id}`);

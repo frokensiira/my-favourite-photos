@@ -85,6 +85,7 @@ const EditAlbum = () => {
 
                     await db.collection('photos').add(photo);
                     navigate(`/albums/${albumId}`);
+                    return;
     
                 } catch(error) {
                     setError(error.message);
