@@ -45,14 +45,14 @@ const SignUp = () => {
                             {error && (<Alert variant="danger">{error}</Alert>)}
 
                             <Form onSubmit={handleSubmit}>
-                                <Form.Group id="email">
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" ref={emailRef} required/>
+                                <Form.Group>
+                                    <Form.Label for="email">Email</Form.Label>
+                                    <Form.Control type="email" ref={emailRef} id="email" required/>
                                 </Form.Group>
 
-                                <Form.Group id="password">
-                                    <Form.Label>Lösenord</Form.Label>
-                                    <Form.Control type="password" ref={passwordRef} required/>
+                                <Form.Group>
+                                    <Form.Label for="password">Lösenord</Form.Label>
+                                    <Form.Control type="password" ref={passwordRef} id="password" required/>
                                 </Form.Group>
 
                                 <Form.Group id="password-confirm">

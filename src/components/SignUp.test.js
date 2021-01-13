@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import App from '../App';
 
-test('renders edit preview button', async () => {
+test('renders signup password button', async () => {
     const history = createMemoryHistory();
-    window.history.pushState({}, '', ':ownerId/review/:albumId')
+    window.history.pushState({}, '', '/signup')
 
     await act(async () => {
         render(
@@ -17,6 +17,7 @@ test('renders edit preview button', async () => {
         )
     })
 
-    expect(screen.getByRole('button', { name: 'Förhandsgranska' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Lösenord'));
     
 })
+

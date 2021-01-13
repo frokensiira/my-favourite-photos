@@ -43,11 +43,11 @@
       width: 75%;
     }
   
-  a {
+  .home-link{
     text-decoration: none;
     color: white;
   }
   
-  a:hover {
+  .home-link:hover {
     text-decoration: underline;
   }

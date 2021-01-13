@@ -7,8 +7,7 @@ const Home = () => {
             ? (<p>Loading...</p>) 
             : (
                 <div>
-                    <p>Home component</p>
-                    <p>You are logged in as <strong>{currentUser.email}</strong></p>
+                    <p>Du är inloggad som <strong>{currentUser.email}</strong></p>
                 </div>
             )
         
