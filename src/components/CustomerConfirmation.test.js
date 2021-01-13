@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import App from '../App';
 
-test('renders thank you text', async () => {
+test('renders signup password button', async () => {
     const history = createMemoryHistory();
-    window.history.pushState({}, '', '/confirmation')
+    window.history.pushState({}, '', '/signup')
 
     await act(async () => {
         render(
@@ -17,7 +17,7 @@ test('renders thank you text', async () => {
         )
     })
 
-    expect(screen.getByRole('heading', { name: 'Tack! Dina valda fotografier har nu skickats till fotografen!'})).toBeInTheDocument();
+    expect(screen.getByLabelText('Lösenord'));
     
 })
 

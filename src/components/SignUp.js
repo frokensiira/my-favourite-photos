@@ -46,18 +46,18 @@ const SignUp = () => {
 
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group>
-                                    <Form.Label for="email">Email</Form.Label>
+                                    <Form.Label htmlFor="email">Email</Form.Label>
                                     <Form.Control type="email" ref={emailRef} id="email" required/>
                                 </Form.Group>
 
                                 <Form.Group>
-                                    <Form.Label for="password">Lösenord</Form.Label>
+                                    <Form.Label htmlFor="password">Lösenord</Form.Label>
                                     <Form.Control type="password" ref={passwordRef} id="password" required/>
                                 </Form.Group>
 
-                                <Form.Group id="password-confirm">
-                                    <Form.Label>Upprepa lösenord</Form.Label>
-                                    <Form.Control type="password" ref={passwordConfirmRef} required/>
+                                <Form.Group >
+                                    <Form.Label htmlFor="password-confirm">Upprepa lösenord</Form.Label>
+                                    <Form.Control type="password" ref={passwordConfirmRef} id="password-confirm" required/>
                                 </Form.Group>
 
                                 <Button disabled={loading} type="submit">Skapa konto</Button>
