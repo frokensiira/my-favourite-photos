@@ -1,7 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Container, Col, Form, Row } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUnlockAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
     const emailRef = useRef();
@@ -28,31 +31,40 @@ const Login = () => {
         <div>
             <Row>
                 <Col md={{ span: 6, offset: 3}}>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>
+                    <Card className="bg-card-user">
+                        <Card.Body className="card-body">
+                            <Card.Title className="card-title">
                                 Logga in
                             </Card.Title>
 
                             {error && (<Alert variant="danger">{error}</Alert>)}
 
                             <Form onSubmit={handleSubmit}>
-                                <Form.Group id="email">
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" ref={emailRef} required/>
+                                <Container>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="2"><FontAwesomeIcon icon={faUser}/></Form.Label>
+                                    
+                                    <Col sm="10">
+                                        <Form.Control className="card-input-field" type="email" ref={emailRef} placeholder="Email" required/>
+                                    </Col>
                                 </Form.Group>
 
-                                <Form.Group id="password">
-                                    <Form.Label>Lösenord</Form.Label>
-                                    <Form.Control type="password" ref={passwordRef} required/>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="2"><FontAwesomeIcon icon={faUnlockAlt}/></Form.Label>
+                                    
+                                    <Col sm="10">
+                                        <Form.Control className="card-input-field" type="password" ref={passwordRef} required placeholder="Lösenord"/>
+                                    </Col>
                                 </Form.Group>
+                                </Container>
 
-                                <Button disabled={loading} type="submit">Logga in</Button>
+                                <Button disabled={loading} type="submit" className="btn-login my-4">Logga in</Button>
                             </Form>
+                            <p>Har du inget ett konto? <Link to="/signup">Skapa konto</Link></p>
                         </Card.Body>
                     </Card>
                     <div className="text-center mt-2">
-                        Har du inget ett konto? <Link to="/signup">Skapa konto</Link>
+                        
                     </div>
                 </Col>
             </Row>

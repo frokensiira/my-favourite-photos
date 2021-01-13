@@ -1,5 +1,5 @@
 
-import { Card, Col, Form  } from 'react-bootstrap';
+import { Card, Col  } from 'react-bootstrap';
 
 const PreviewPhoto = ({photo}) => {
 

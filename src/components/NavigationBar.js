@@ -8,7 +8,7 @@ const NavigationBar = () => {
 
     return ( 
         <header>
-            <Navbar bg="dark" variant="dark">
+            <Navbar className="navbar" bg="dark" variant="dark">
                 <Container>
                     <Link to="/" className="navbar-brand">
                         <img
