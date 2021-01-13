@@ -1,12 +1,16 @@
-import { useState } from 'react';
 import { FadeLoader } from 'react-spinners';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import useAlbums from '../hooks/useAlbums';
 import { Link } from 'react-router-dom';
+import { db, storage } from '../firebase';
 
 const Albums = () => {
 
     const { albums, loading } = useAlbums();
+
+    const handleDeleteAlbum = async (e) => {
+
+    }
 
     return (  
         <div>
@@ -31,10 +35,10 @@ const Albums = () => {
                                         <Card.Img variant="top" src="https://image.shutterstock.com/image-vector/no-image-available-icon-template-600w-1036735678.jpg"/>
                                         <Card.Body>
                                             <Card.Title className="text-center">{album.albumTitle}</Card.Title>
-                                            <Card.Text>Länk till kund: 1234</Card.Text>
-                                            <Link to={`/albums/${album.id}`}>
-                                                <Button variant="primary" size="sm">Till album</Button>
+                                            <Link to={`/albums/${album.id}`} className="btn btn-primary btn-sm mx-2">
+                                                Till album
                                             </Link>
+                                            <Button id={album.id} onClick={handleDeleteAlbum} variant="danger" size="sm">Radera</Button>
                                         </Card.Body>
                                     </Card>
                                 </Col>

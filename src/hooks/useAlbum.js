@@ -27,6 +27,7 @@ const useAlbum = (albumId, user) => {
             .where('albumTitle', '==', doc.data().albumTitle)
             .where('owner', '==', user)
             .onSnapshot( snapshot => {
+                console.log('this is snapshot', snapshot);
                 setLoading(true);
                 const snapshotPhotos = [];
 

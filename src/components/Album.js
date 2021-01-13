@@ -49,6 +49,7 @@ const Album = () => {
             //check the name of the photo
             const doc = await db.collection('photos').doc(e.target.id).get();
 
+            //check if there are any more copies of the photo in the db
             const querySnapshot = await db.collection("photos")
                 .where('name', '==', doc.data().name)
                 .where('owner', '==', currentUser.uid)
@@ -62,9 +63,11 @@ const Album = () => {
             
             console.log('this is snapshotPhotos', snapshotPhotos);
 
+            //delete the photo from the db
             await db.collection('photos').doc(e.target.id).delete();
             console.log('deleted photo from db');
 
+            //if it was the last copy of the photo, delete it from storage as well
             if(snapshotPhotos.length < 2) {
                 await storage.ref(doc.data().path).delete();
                 console.log('this photo was the last one, now deleted file from storage');
