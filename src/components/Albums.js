@@ -10,6 +10,54 @@ const Albums = () => {
 
     const handleDeleteAlbum = async (e) => {
 
+        try {
+
+            //get name of album
+            const doc = await db.collection('albums').doc(e.target.id).get();
+
+            const snapshotPhotos = [];
+            db.collection('photos').where('albumTitle', '==', doc.data().albumTitle).get()
+                .then(function(querySnapshot) {
+
+                    const batch = db.batch();
+
+                    querySnapshot.forEach(function(doc) {
+
+                        snapshotPhotos.push({
+                            ...doc.data()
+                        });
+                        batch.delete(doc.ref);
+                    });
+
+                    // Commit the batch
+                    return batch.commit();
+                })
+                    .then(function() {
+
+                        //delete album from db
+                        db.collection('albums').doc(e.target.id).delete().then(() => {
+                            
+                            //delete the photos in the album in storage
+                            const promises = snapshotPhotos.map(async photo => {
+                                const result = await storage.ref(photo.path).delete()
+                                return new Promise((resolve, reject) => {resolve(result)})
+                            })
+
+                            Promise.all(promises).then(() => {
+                                console.log('everything deleted!');
+                            }).catch(error => {
+
+                        })     
+                    }).catch(error => {
+                        console.log(error.message);
+                    })
+                    
+                }); 
+
+        } catch (error) {
+            console.log(error.message);
+        }
+
     }
 
     return (  
