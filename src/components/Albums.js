@@ -18,12 +18,14 @@ const Albums = () => {
             const doc = await db.collection('albums').doc(e.target.id).get();
 
             const snapshotPhotos = [];
+            const photoCopies = [];
 
+            //find all of the all of the photos with the same albumTitle and delete these
             db.collection('photos')
                 .where('albumTitle', '==', doc.data().albumTitle)
                 .where('owner', '==', currentUser.uid)
                 .get()
-                    .then(function(querySnapshot) {
+                    .then((querySnapshot) => {
 
                         const batch = db.batch();
 
@@ -38,22 +40,58 @@ const Albums = () => {
                         // Commit the batch
                         batch.commit();
                     })
-                        .then(function() {
+                        .then(() => {
 
                             //delete album from db
                             db.collection('albums').doc(e.target.id).delete().then(() => {
+
+                                //check if there are more photos in db with the same name 
+                                const prom = snapshotPhotos.map(async photo => {
+                                    const querySnapshot = await db.collection('photos')
+                                    .where('name', '==', photo.name)
+                                    .where('owner', '==', currentUser.uid)
+                                    .get()
+                                        
+                                    querySnapshot.forEach(doc => {
+                                        photoCopies.push({
+                                            ...doc.data()
+                                        });
+                                    });                  
                                 
-                                //delete the photos in the album in storage
-                                const promises = snapshotPhotos.map(async photo => {
-                                    const result = await storage.ref(photo.path).delete()
-                                    return new Promise((resolve, reject) => {resolve(result)})
+                                    return new Promise((resolve, reject) => {resolve(querySnapshot)})
                                 })
+                                
+                                Promise.all(prom).then(() => {
+                                                                        
+                                    const namePhotoCopies = photoCopies.map(photo => photo.name);
+                                    const nameSnapshotPhotos = snapshotPhotos.map(photo => photo.name);
 
-                                Promise.all(promises).then(() => {
-                                    console.log('everything deleted!');
+                                    const spreaded = [...photoCopies, ...snapshotPhotos];
+                                    const lastPhotos = spreaded.filter(el => {
+                                        return !(namePhotoCopies.includes(el.name) && nameSnapshotPhotos.includes(el.name));
+                                    });
+                                    
+                                    if(lastPhotos.length === 0) {
+                                        console.log('dont want to delete a thing from storage');
+                                        return;
+                                    }
+
+                                    //delete the photos in the album in storage
+                                    const promises = lastPhotos.map(async photo => {
+                                        const result = await storage.ref(photo.path).delete()
+                                        return new Promise((resolve, reject) => {resolve(result)});
+                                    })
+
+                                    Promise.all(promises).then(() => {
+                                        console.log('everything deleted!');
+                                    }).catch(error => {
+                                        console.log(error);
+                                    }) 
+                
                                 }).catch(error => {
-
-                                })     
+                                    console.log(error);
+                                })  
+                                
                             })
                         }).catch(error => {
                             console.log(error.message);
@@ -76,7 +114,7 @@ const Albums = () => {
                     
                     : albums.length === 0 
                         ? (
-                            <div className="text-center my-5">
+                            <div className="text-center my-5 albums">
                                 <p>Du har inga album för närvarande</p>
                                 <Link className="btn btn-primary" to="/albums/create-album">Skapa album</Link>
                             </div>

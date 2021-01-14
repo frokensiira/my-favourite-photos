@@ -62,7 +62,7 @@ body:after {
     background-color: #2691d9;
 }
 
-.home, .albums, .album {
+.home, .albums, .album, .edit-album {
     color: white;
 }
 
@@ -74,6 +74,8 @@ body:after {
     background-color: #d8e5e2;
     border-radius: 4px;
     border: 2px dashed #eee;
+    color: black;
+    font-weight: 600;
 
     &.drag-accept {
         background-color: #d4edda;

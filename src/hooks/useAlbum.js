@@ -15,8 +15,8 @@ const useAlbum = (albumId, user) => {
         .doc(albumId)
         .get().then(doc => {     
 
+            //check if the user owns the album
             if(doc.data().owner !== user) {
-                console.log('you are not a valid user');
                 navigate('/403');
                 return;
 
@@ -26,7 +26,7 @@ const useAlbum = (albumId, user) => {
             .where('albumTitle', '==', doc.data().albumTitle)
             .where('owner', '==', user)
             .onSnapshot( snapshot => {
-                console.log('this is snapshot', snapshot);
+
                 setLoading(true);
                 const snapshotPhotos = [];
 
