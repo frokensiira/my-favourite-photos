@@ -18,18 +18,6 @@ const EditAlbum = () => {
     const { currentUser } = useAuth();
     const [error, setError ] = useState(null);
     const navigate = useNavigate();
-    console.log('this is albumId', albumId);
-
-    const handleCheckBox = (e) => {
-/*         const [image] = photos.filter(photo =>  (photo.id === e.target.id));
-
-        if(e.target.checked === true) {
-            setPickedPhotos(photos => [...photos, image]);
-        } else {
-            const updatedPhotoArray = pickedPhotos.filter(photo =>  (photo.id !== e.target.id))
-            setPickedPhotos(updatedPhotoArray);
-        } */
-    }
 
     const handleChangeTitle = (e) => {
         setNewAlbumTitle(e.target.value);
@@ -158,7 +146,7 @@ const EditAlbum = () => {
             <SRLWrapper>
                 <Row className="mb-5">
                     {state.photos.map(photo => (
-                        <Photo photo={photo} key={photo.id} onChange={handleCheckBox}/>
+                        <Photo photo={photo} key={photo.id}/>
                     ))}
                 </Row>
             </SRLWrapper>

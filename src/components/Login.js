@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { Alert, Button, Card, Container, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,7 @@ const Login = () => {
                             {error && (<Alert variant="danger">{error}</Alert>)}
 
                             <Form onSubmit={handleSubmit}>
-                                <Container>
+                                
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="2"><FontAwesomeIcon icon={faUser}/></Form.Label>
                                     
@@ -55,7 +55,7 @@ const Login = () => {
                                         <Form.Control className="card-input-field" type="password" ref={passwordRef} required placeholder="Lösenord"/>
                                     </Col>
                                 </Form.Group>
-                                </Container>
+                                
 
                                 <Button disabled={loading} type="submit" className="btn-user my-4 px-5">Logga in</Button>
                             </Form>

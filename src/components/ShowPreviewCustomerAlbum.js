@@ -66,20 +66,18 @@ const ShowPreviewCustomerAlbum = () => {
                 <h2>Valda bilder</h2>
                 <Row className="mb-5">
                         
-                        {
-                            state.likedPhotos.map(photo => (
-                                <PreviewPhoto photo={photo} key={photo.id} />
-                        ))}    
+                    {
+                        state.likedPhotos.map(photo => (
+                            <PreviewPhoto photo={photo} key={photo.id} />
+                    ))}    
                         
                 </Row>
                         <h2>Bortvalda bilder</h2>
                 <Row className="mb-5">
-                        {
-                            state.dislikedPhotos.map(photo => (
-                                <PreviewPhoto photo={photo} key={photo.id} />
-                        ))}  
-                        
-
+                    {
+                        state.dislikedPhotos.map(photo => (
+                            <PreviewPhoto photo={photo} key={photo.id} />
+                    ))}  
                 </Row>
                 <Link to={`/${ownerId}/review/${albumId}`} className="btn btn-primary">Redigera</Link>
                 <Button onClick={handleSubmitReviewedAlbum} variant="secondary">Bekräfta</Button>

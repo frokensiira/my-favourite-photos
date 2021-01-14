@@ -179,11 +179,16 @@ const Album = () => {
                         <Row>
                     <Col md={{ span: 6, offset: 3}}>
                         <Form>
-                            <Form.Group>
+                            <Form.Group as={Row}>
                                 <Form.Label className="album">Ange albumets titel:</Form.Label>
-                                <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
+                                <Col>
+                                    <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
+                                
+                                </Col>
+                                <Col>
+                                    <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                                </Col>
                             </Form.Group>
-                            <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
                         </Form>
                     </Col>
                 </Row>

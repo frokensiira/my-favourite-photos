@@ -3,7 +3,7 @@ import React from 'react'
 const AccessDenied = () => {
     return (
         <div>
-            <p className="text-center">You don't have access to this album</p>
+            <p id="denied-access-text" className="text-center text-white">You don't have access to this album</p>
         </div>
     )
 }

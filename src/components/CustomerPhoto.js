@@ -16,7 +16,6 @@ const CustomerPhoto = ({photo, handleReviewButtons}) => {
         handleReviewButtons(e.currentTarget.value, e.target.name)
     }
      
-    //console.log('inside customerphoto this is photo', photo);
     return (  
         <Col sm={6} md={4} lg={3}>                                
             <Card className="mb-3">

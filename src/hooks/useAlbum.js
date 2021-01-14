@@ -8,14 +8,13 @@ const useAlbum = (albumId, user) => {
     const [photos, setPhotos] = useState([]);
     const [albumTitle, setAlbumTitle] = useState('');
     const navigate = useNavigate();
-    //console.log('validUser is', validUser);
 
     useEffect(() => {
         //subscribe to album snapshots from firebase to update component whenever something changes
         db.collection('albums')
         .doc(albumId)
         .get().then(doc => {     
-            //console.log('this is doc.data()', doc.data());
+
             if(doc.data().owner !== user) {
                 console.log('you are not a valid user');
                 navigate('/403');
