@@ -11,7 +11,7 @@ const Photo = ({photo, handleCheckBox, handleDeletePhoto}) => {
                 <Card.Body>
                     <Form>
                         <Form.Group controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Välj" onChange={(e) => handleCheckBox(e)} id={photo.id}/>
+                            <Form.Check id="checkbox-text" type="checkbox" label="Välj" onChange={(e) => handleCheckBox(e)} id={photo.id}/>
                         </Form.Group>
                     </Form>
 

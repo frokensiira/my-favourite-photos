@@ -6,7 +6,8 @@ const Home = () => {
         loading 
             ? (<p>Loading...</p>) 
             : (
-                <div>
+                <div className="home">
+                    <h1>Välkommen!</h1>
                     <p>Du är inloggad som <strong>{currentUser.email}</strong></p>
                 </div>
             )

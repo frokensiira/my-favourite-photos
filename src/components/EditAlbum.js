@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { db, storage } from '../firebase';
 import { useDropzone } from 'react-dropzone';
 import { useState, useCallback } from 'react';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SRLWrapper } from 'simple-react-lightbox';
 import Photo from './Photo';
 

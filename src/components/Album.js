@@ -143,7 +143,7 @@ const Album = () => {
     
     return (  
         <div className="text-center">
-                <h1 className="text-center">{albumTitle}</h1>
+                <h1 className="text-center album">{albumTitle}</h1>
 
                 {
                     photos.length !== 0 && (
@@ -180,7 +180,7 @@ const Album = () => {
                     <Col md={{ span: 6, offset: 3}}>
                         <Form>
                             <Form.Group>
-                                <Form.Label>Ange albumets titel:</Form.Label>
+                                <Form.Label className="album">Ange albumets titel:</Form.Label>
                                 <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
                             </Form.Group>
                             <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>

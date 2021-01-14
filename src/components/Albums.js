@@ -3,6 +3,7 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import useAlbums from '../hooks/useAlbums';
 import { Link } from 'react-router-dom';
 import { db, storage } from '../firebase';
+import albumImage from '../assets/image.png'
 
 const Albums = () => {
 
@@ -11,7 +12,6 @@ const Albums = () => {
     const handleDeleteAlbum = async (e) => {
 
         try {
-
             //get name of album
             const doc = await db.collection('albums').doc(e.target.id).get();
 
@@ -62,7 +62,7 @@ const Albums = () => {
 
     return (  
         <div>
-            <h1 className="text-center">Mina album</h1>
+            <h1 className="text-center albums">Mina album</h1>
 
             {
                 loading
@@ -80,7 +80,7 @@ const Albums = () => {
                             {albums.map(album => (
                                 <Col sm={6} md={4} lg={3} key={album.id}>                                
                                     <Card className="mb-3">
-                                        <Card.Img variant="top" src="https://image.shutterstock.com/image-vector/no-image-available-icon-template-600w-1036735678.jpg"/>
+                                        <Card.Img className="p-4" variant="top" src={albumImage}/>
                                         <Card.Body>
                                             <Card.Title className="text-center">{album.albumTitle}</Card.Title>
                                             <Link to={`/albums/${album.id}`} className="btn btn-primary btn-sm mx-2">

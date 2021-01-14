@@ -33,7 +33,7 @@ const Login = () => {
                 <Col md={{ span: 6, offset: 3}}>
                     <Card className="bg-card-login">
                         <Card.Body className="card-body">
-                            <Card.Title className="card-title">
+                            <Card.Title className="card-title-user">
                                 Logga in
                             </Card.Title>
 
