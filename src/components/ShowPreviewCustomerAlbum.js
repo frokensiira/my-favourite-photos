@@ -12,6 +12,9 @@ const ShowPreviewCustomerAlbum = () => {
     const { state } = useLocation(); 
     const [error, setError ] = useState(null);
 
+    console.log('this is state.likedPhotos', state.likedPhotos);
+    console.log('this is state.dislikedPhotos', state.dislikedPhotos);
+
     const newAlbumTitle = `${state.albumTitle} - kundvalda`;
 
     const handleSubmitReviewedAlbum = () => {

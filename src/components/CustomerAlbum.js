@@ -12,37 +12,48 @@ const CustomerAlbum = () => {
     const { photos, albumTitle, loading } = useAlbum(albumId, ownerId);
     const navigate = useNavigate();
 
-    const [likedPhotos, setLikedPhotos] = useState(photos);
-    const [disLikedPhotos, setDisLikedPhotos] = useState([]);
+    const [reviewedPhotos, setReviewedPhotos] = useState(photos);
 
     useEffect(() => {
-        setLikedPhotos(photos);
+        const newPhotos = photos.map(photo => {
+            const newPhoto = {
+                review: 'like',
+                ...photo,
+                
+            };
+            return newPhoto;
+        })
+        setReviewedPhotos(newPhotos);
     }, [photos]);
 
     const handleReviewButtons = (review, photoId) => {
 
-        if(review === 'dislike') {
-            const updatedPhotos = likedPhotos.filter(photo => photo.id !== photoId);
-            setLikedPhotos(updatedPhotos);
-        }
+        const updatedReviewedPhotos = reviewedPhotos.map(photo =>
+            photo.id === photoId ? { ...photo, review: review } : photo
+        );
+
+        setReviewedPhotos(updatedReviewedPhotos);
 
     }
 
     const handleSubmitToPreview = () => {
 
-        if(likedPhotos.length === 0){
+        const likedImages = reviewedPhotos.filter(photo =>{
+            console.log('this is photo.review', photo.review);
+            return photo.review === 'like';
+        });
+
+        if(likedImages.length === 0){
             alert('Du måste välja minst ett foto')
             return;
         }
 
-        const spreaded = [...likedPhotos, ...photos];
-        const dislikedPhotos = spreaded.filter(el => {
-            return !(likedPhotos.includes(el) && photos.includes(el));
-        });
+        const dislikedImages = reviewedPhotos.filter(photo =>{
+            console.log('inside filter dislike, this is photo', photo);
+            return photo.review === 'dislike';
+        })
 
-        setDisLikedPhotos(dislikedPhotos);
-
-        navigate(`/${ownerId}/review/preview/${albumId}`, {state: {likedPhotos, dislikedPhotos, albumTitle, total: photos.length}});
+        navigate(`/${ownerId}/review/preview/${albumId}`, {state: {likedPhotos: likedImages, dislikedPhotos: dislikedImages, albumTitle, total: photos.length}});
     }
 
     return (  
