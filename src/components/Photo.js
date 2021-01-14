@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Row  } from 'react-bootstrap';
+import { Button, Card, Col, Form  } from 'react-bootstrap';
 
 const Photo = ({photo, handleCheckBox, handleDeletePhoto}) => {
 
@@ -11,10 +11,10 @@ const Photo = ({photo, handleCheckBox, handleDeletePhoto}) => {
                 <Card.Body>
                     <Form.Row >
                         <Form.Group as={Col}>
-                            <Form.Check id="checkbox-text" type="checkbox" label="Välj" onChange={(e) => handleCheckBox(e)} id={photo.id}/>
+                            <Form.Check type="checkbox" label="Välj" onChange={(e) => handleCheckBox(e)} id={photo.id}/>
                         </Form.Group>
                         <Form.Group as={Col}>
-                            <Button variant="danger" size="sm" onClick={handleDeletePhoto} id={photo.id}>Radera</Button>
+                            <Button className="btn-brownred" size="sm" onClick={handleDeletePhoto} id={photo.id}>Radera</Button>
                         </Form.Group>
                     </Form.Row>
                 </Card.Body>

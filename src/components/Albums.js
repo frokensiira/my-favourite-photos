@@ -1,11 +1,11 @@
 import { FadeLoader } from 'react-spinners';
-import { Alert, Button, Card, Col, Row } from 'react-bootstrap';
+import { Alert, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { db, storage } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
-import albumImage from '../assets/image.png';
 import useAlbums from '../hooks/useAlbums';
+import SingleAlbum from './SingleAlbum';
 
 const Albums = () => {
 
@@ -120,19 +120,9 @@ const Albums = () => {
                             )
                         
                         : (<Row>
-                            {albums.map(album => (
-                                <Col sm={6} md={4} lg={3} key={album.id}>                                
-                                    <Card className="mb-3">
-                                        <Card.Img className="p-4" variant="top" src={albumImage}/>
-                                        <Card.Body>
-                                            <Card.Title className="text-center">{album.albumTitle}</Card.Title>
-                                            <Link to={`/albums/${album.id}`} className="btn btn-primary btn-sm mx-2">
-                                                Till album
-                                            </Link>
-                                            <Button id={album.id} onClick={handleDeleteAlbum} variant="danger" size="sm">Radera</Button>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
+                            {albums.map((album, index) => (
+                                <SingleAlbum key={index} album={album} handleDeleteAlbum={handleDeleteAlbum}/>
+                                
                             ))}
                         </Row>)
             }
