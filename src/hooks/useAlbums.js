@@ -23,7 +23,6 @@ const useAlbums = () => {
                         ...doc.data()
                     });
                 });
-
                 setLoading(false);
                 setAlbums(snapshotAlbums);
         });

@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { Button, Row } from 'react-bootstrap';
+import { Alert, Button, Row } from 'react-bootstrap';
 import { SRLWrapper } from 'simple-react-lightbox';
-import PreviewPhoto from './PreviewPhoto';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import PreviewPhoto from './PreviewPhoto';
 
 const ShowPreviewCustomerAlbum = () => {
+    const navigate = useNavigate();
     const { albumId, ownerId } = useParams();
     const { state } = useLocation(); 
-    const [loading, setLoading] = useState(true);
     const [error, setError ] = useState(null);
-    const navigate = useNavigate();
 
     const newAlbumTitle = `${state.albumTitle} - kundvalda`;
 
@@ -22,7 +21,7 @@ const ShowPreviewCustomerAlbum = () => {
         }
         
         const promises = state.likedPhotos.map(async likedPhoto => {
-            setLoading(true);
+
             try {
                 const photo = {
                     name: likedPhoto.name,
@@ -40,7 +39,6 @@ const ShowPreviewCustomerAlbum = () => {
 
             } catch(error) {
                 setError(error.message);
-                console.log('something went wrong', error);
             }
 
         })
@@ -49,7 +47,6 @@ const ShowPreviewCustomerAlbum = () => {
             .then(() => {
                 db.collection('albums').add(album)
                 .then(doc => {
-                    setLoading(false);
                     navigate('/confirmation');
                 });
             }).catch (error => {
@@ -59,11 +56,13 @@ const ShowPreviewCustomerAlbum = () => {
 
     return (
         <div className="text-center">
-            <h1 className="text-center">{newAlbumTitle}</h1>
-            <p>Du har valt {state.likedPhotos.length} {state.likedPhotos.length > 1 ? 'bilder' : 'bild'} av totalt {state.total}</p>
+            <h1 className="text-center text-white">{newAlbumTitle}</h1>
+            <p className="text-white">Du har valt {state.likedPhotos.length} {state.likedPhotos.length > 1 ? 'bilder' : 'bild'} av totalt {state.total}</p>
+
+            { error && (<Alert variant="danger">{error}</Alert>) }
 
             <SRLWrapper>
-                <h2>Valda bilder</h2>
+                <h2 className="text-white">Valda bilder</h2>
                 <Row className="mb-5">
                         
                     {
@@ -72,7 +71,7 @@ const ShowPreviewCustomerAlbum = () => {
                     ))}    
                         
                 </Row>
-                        <h2>Bortvalda bilder</h2>
+                    <h2 className="text-white">Bortvalda bilder</h2>
                 <Row className="mb-5">
                     {
                         state.dislikedPhotos.map(photo => (

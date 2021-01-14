@@ -1,7 +1,6 @@
 import { ButtonGroup, Card, Col, ToggleButton  } from 'react-bootstrap';
 import { useState } from 'react';
 
-
 const CustomerPhoto = ({photo, handleReviewButtons}) => {
 
     const [radioValue, setRadioValue] = useState('like');
@@ -24,18 +23,18 @@ const CustomerPhoto = ({photo, handleReviewButtons}) => {
                 </a>
                 <Card.Body>
                     <ButtonGroup required>
-                    {radios.map((radio, id) => (
-                        <ToggleButton
-                            key={id}
-                            type="radio"
-                            variant="secondary"
-                            name={photo.id}
-                            value={radio.value}
-                            onChange={handleRadioButtons}
-                            checked={radioValue === radio.value}
-                        >
-                        {radio.name}
-                        </ToggleButton>
+                        {radios.map((radio, id) => (
+                            <ToggleButton
+                                key={id}
+                                type="radio"
+                                variant="secondary"
+                                name={photo.id}
+                                value={radio.value}
+                                onChange={handleRadioButtons}
+                                checked={radioValue === radio.value}
+                            >
+                                {radio.name}
+                            </ToggleButton>
                         ))}
                     </ButtonGroup>
                 </Card.Body>

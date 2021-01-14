@@ -1,15 +1,14 @@
-import CustomerPhoto from './CustomerPhoto';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FadeLoader } from 'react-spinners';
 import { useParams } from 'react-router-dom';
-import useAlbum from '../hooks/useAlbum';
 import { useNavigate } from 'react-router-dom';
+import useAlbum from '../hooks/useAlbum';
+import CustomerPhoto from './CustomerPhoto';
 
 const CustomerAlbum = () => {
     const { albumId, ownerId } = useParams();
-    //const [loading, setLoading] = useState(true);
     const { photos, albumTitle, loading } = useAlbum(albumId, ownerId);
     const navigate = useNavigate();
 
@@ -33,7 +32,6 @@ const CustomerAlbum = () => {
 
         if(likedPhotos.length === 0){
             alert('Du måste välja minst ett foto')
-            console.log('You have to choose at least one photo');
             return;
         }
 
@@ -49,7 +47,7 @@ const CustomerAlbum = () => {
 
     return (  
         <div className="text-center">
-            <h1 className="text-center my-4">{albumTitle}</h1>
+            <h1 className="text-center my-4 text-white">{albumTitle}</h1>
             
                     {
                         loading

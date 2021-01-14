@@ -1,5 +1,4 @@
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { FadeLoader } from 'react-spinners';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { db, storage } from '../firebase';
 import { useDropzone } from 'react-dropzone';
@@ -8,16 +7,14 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SRLWrapper } from 'simple-react-lightbox';
 import Photo from './Photo';
 
-
 const EditAlbum = () => {
+    const navigate = useNavigate();
     const { state } = useLocation();
     const { albumId } = useParams();
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [newAlbumTitle, setNewAlbumTitle] = useState(state.albumTitle);
     const { currentUser } = useAuth();
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [newAlbumTitle, setNewAlbumTitle] = useState(state.albumTitle);
     const [error, setError ] = useState(null);
-    const navigate = useNavigate();
 
     const handleChangeTitle = (e) => {
         setNewAlbumTitle(e.target.value);
@@ -25,9 +22,9 @@ const EditAlbum = () => {
 
     const handleSaveChanges = async (e) => {
 
+        //check if there is a new album title
         if(newAlbumTitle !== state.albumTitle) {
             try {
-                console.log('inside try');
                 await db.collection('albums').doc(albumId).update({
                     albumTitle: newAlbumTitle
                 });
@@ -42,14 +39,14 @@ const EditAlbum = () => {
                 return;
     
             } catch (error) {
-                console.log(error.message);
+                setError(error.message);
             }
         }
             
+        //check if the user uploaded some photos
         if(uploadedFiles.length !==0) {
 
             const promises = uploadedFiles.map(async uploadedFile => {
-                setLoading(true);
     
                 try {
     
@@ -152,6 +149,8 @@ const EditAlbum = () => {
             <div className="text-center">
                 <Button className="px-5" onClick={handleSaveChanges}>Spara</Button>
             </div>
+
+            {error && (<Alert variant="danger">{error}</Alert>)}
                                 
         </div>
 
@@ -159,61 +158,3 @@ const EditAlbum = () => {
 }
  
 export default EditAlbum;
-
-{/*            <Row>
-                <Col md={{ span: 6, offset: 3}}>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>
-                                Skapa album
-                            </Card.Title>
-
-                            {error && (<Alert variant="danger">{error}</Alert>)}
-
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group id="title">
-                                    <Form.Label>Albumtitel</Form.Label>
-                                    <Form.Control type="title" value={albumTitle} required onChange={handleChangeTitle}/>
-
-
-                                    <div {...getRootProps()} id="dropzone-wrapper" className={`px-4 py-4 my-3 ${isDragAccept ? `drag-accept` : ``} ${isDragReject ? `drag-reject` : ``}`}>
-                                        <input {...getInputProps()} />
-                                            {
-                                                isDragActive 
-                                                    ? isDragAccept 
-                                                        ? (<p>Just drop it already</p>) 
-                                                        : (<p>Sorry, not the right file type</p>)
-                                                    : (<p>Give me some files</p>) 
-                                            }      
-                                    </div>
-                                    
-                                </Form.Group> */}
-
-                                {/* {
-                                    error && 
-                                    (
-                                        <Alert variant="danger">{error}</Alert>
-                                    )
-                                } */}
-                                 
-{/* 
-                                {
-                                    uploadedFiles && uploadedFiles.length !== 0 && (
-                                        <div className="accepted-files mt-2">
-                                            <ul className="list-unstyled">
-                                                {uploadedFiles.map(file => (
-                                                    <li key={file.name}>
-                                                        {file.name}
-                                                    </li>
-                                                ))}
-                                            </ul>   
-                                        </div>
-                                    )
-                                } 
-
-                                <Button disabled={loading} type="submit">Skapa album</Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row> */}

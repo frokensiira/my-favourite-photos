@@ -23,22 +23,22 @@ const useAlbum = (albumId, user) => {
             }
             setAlbumTitle(doc.data().albumTitle)
             const unsubscribe = db.collection('photos')
-            .where('albumTitle', '==', doc.data().albumTitle)
-            .where('owner', '==', user)
-            .onSnapshot( snapshot => {
+                .where('albumTitle', '==', doc.data().albumTitle)
+                .where('owner', '==', user)
+                .onSnapshot( snapshot => {
 
-                setLoading(true);
-                const snapshotPhotos = [];
+                    setLoading(true);
+                    const snapshotPhotos = [];
 
-                snapshot.forEach(doc => {
-                    snapshotPhotos.push({
-                        id: doc.id,
-                        ...doc.data()
+                    snapshot.forEach(doc => {
+                        snapshotPhotos.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
                     });
-                });
-                setPhotos(snapshotPhotos);
-                setLoading(false);
-            })
+                    setPhotos(snapshotPhotos);
+                    setLoading(false);
+                })
 
             return unsubscribe;
         })

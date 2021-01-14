@@ -1,23 +1,23 @@
 import './assets/App.scss';
 import { Container } from 'react-bootstrap';
 import { Route, Routes } from 'react-router-dom';
-import AuthRoute from './components/AuthRoute';
-import Home from './components/Home';
-import Login from './components/Login';
-import NavigationBar from './components/NavigationBar';
-import NotFound from './components/NotFound';
-import SignUp from './components/SignUp';
-import Logout from './components/Logout';
-import AuthContextProvider from './contexts/AuthContext';
-import Albums from './components/Albums';
+import AccessDenied from './components/AccessDenied';
 import Album from './components/Album';
+import Albums from './components/Albums';
+import AuthContextProvider from './contexts/AuthContext';
+import AuthRoute from './components/AuthRoute';
 import CreateAlbum from './components/CreateAlbum';
-import SimpleReactLightbox from 'simple-react-lightbox';
 import CustomerAlbum from './components/CustomerAlbum';
 import CustomerConfirmation from './components/CustomerConfirmation';
-import ShowPreviewCustomerAlbum from './components/ShowPreviewCustomerAlbum';
 import EditAlbum from './components/EditAlbum';
-import AccessDenied from './components/AccessDenied';
+import Home from './components/Home';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import NavigationBar from './components/NavigationBar';
+import NotFound from './components/NotFound';
+import ShowPreviewCustomerAlbum from './components/ShowPreviewCustomerAlbum';
+import SignUp from './components/SignUp';
+import SimpleReactLightbox from 'simple-react-lightbox';
 
 const App = () => {
 	return (

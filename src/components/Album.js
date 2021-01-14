@@ -1,27 +1,24 @@
 import { useParams } from 'react-router-dom';
 import { FadeLoader } from 'react-spinners';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import Photo from './Photo';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { SRLWrapper } from 'simple-react-lightbox';
-import useAlbum from '../hooks/useAlbum';
 import { useState } from 'react';
 import { db, storage } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Photo from './Photo';
+import useAlbum from '../hooks/useAlbum';
 
 const Album = () => {
+    const navigate = useNavigate();
     const { currentUser } = useAuth();
     const { albumId } = useParams();
     const { albumTitle, loading, setLoading, photos } = useAlbum(albumId, currentUser.uid);
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [pickedPhotos, setPickedPhotos] = useState([]);
     const [customerLink, setCustomerLink] = useState('');
-
-
     const [error, setError ] = useState(null);
     
-    const navigate = useNavigate();
-
     const handleCheckBox = (e) => {
         const [image] = photos.filter(photo =>  (photo.id === e.target.id));
 
@@ -45,7 +42,6 @@ const Album = () => {
     const handleDeletePhoto = async (e) => {
 
         try {
-
             //check the name of the photo
             const doc = await db.collection('photos').doc(e.target.id).get();
 
@@ -57,28 +53,21 @@ const Album = () => {
             
             const snapshotPhotos = [];
             querySnapshot.forEach(function(doc) {
-                console.log(doc.id, " => ", doc.data());
                 snapshotPhotos.push(doc.id);
             });
-            
-            console.log('this is snapshotPhotos', snapshotPhotos);
 
             //delete the photo from the db
             await db.collection('photos').doc(e.target.id).delete();
-            console.log('deleted photo from db');
 
             //if it was the last copy of the photo, delete it from storage as well
             if(snapshotPhotos.length < 2) {
                 await storage.ref(doc.data().path).delete();
-                console.log('this photo was the last one, now deleted file from storage');
             }
 
         } catch (error) {
-            console.log('this is error', error);
-            console.log('this is error.message', error.message);
+            setError(error.message);
         }
 
-        
     }
 
     const handleInputChange = (e) => {
@@ -123,7 +112,6 @@ const Album = () => {
 
             } catch(error) {
                 setError(error.message);
-                console.log('something went wrong', error);
             }
 
         })
@@ -147,7 +135,7 @@ const Album = () => {
 
                 {
                     photos.length !== 0 && (
-                        <Button className="my-3" onClick={handleGenerateLink} variant="primary">Generera kundlänk</Button>)
+                        <Button className="my-3" onClick={handleGenerateLink} variant="outline-primary">Generera kundlänk</Button>)
                 }
                 {
                     customerLink && 
@@ -158,6 +146,8 @@ const Album = () => {
                         
                     )
                 }
+
+                { error && (<Alert variant="danger">{error}</Alert>) }
 
                 {
                     loading
@@ -186,7 +176,7 @@ const Album = () => {
                                 
                                 </Col>
                                 <Col>
-                                    <Button disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                                    <Button variant="primary" disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
                                 </Col>
                             </Form.Group>
                         </Form>
@@ -195,11 +185,10 @@ const Album = () => {
                     )
                 }
                 
-
                 <Row>
                     <Col md={{ span: 6, offset: 3}}>
                         <Form>
-                            <Button className="my-4" variant="secondary" onClick={handleEditAlbum}>Redigera album</Button>
+                            <Button className="my-4" variant="outline-warning" onClick={handleEditAlbum}>Redigera album</Button>
                         </Form>
                     </Col>
                 </Row>  

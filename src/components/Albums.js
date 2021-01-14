@@ -1,15 +1,17 @@
 import { FadeLoader } from 'react-spinners';
-import { Button, Card, Col, Row } from 'react-bootstrap';
-import useAlbums from '../hooks/useAlbums';
+import { Alert, Button, Card, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { db, storage } from '../firebase';
-import albumImage from '../assets/image.png';
 import { useAuth } from '../contexts/AuthContext';
+import { useState } from 'react';
+import albumImage from '../assets/image.png';
+import useAlbums from '../hooks/useAlbums';
 
 const Albums = () => {
 
     const { albums, loading } = useAlbums();
     const { currentUser } = useAuth();
+    const [error, setError] = useState(null);
 
     const handleDeleteAlbum = async (e) => {
 
@@ -20,7 +22,7 @@ const Albums = () => {
             const snapshotPhotos = [];
             const photoCopies = [];
 
-            //find all of the all of the photos with the same albumTitle and delete these
+            //find all of the photos with the same albumTitle and delete them
             db.collection('photos')
                 .where('albumTitle', '==', doc.data().albumTitle)
                 .where('owner', '==', currentUser.uid)
@@ -45,7 +47,7 @@ const Albums = () => {
                             //delete album from db
                             db.collection('albums').doc(e.target.id).delete().then(() => {
 
-                                //check if there are more photos in db with the same name 
+                                //check if there are more photos in db with the same name as those in the deleted album, if so save them
                                 const prom = snapshotPhotos.map(async photo => {
                                     const querySnapshot = await db.collection('photos')
                                     .where('name', '==', photo.name)
@@ -66,15 +68,11 @@ const Albums = () => {
                                     const namePhotoCopies = photoCopies.map(photo => photo.name);
                                     const nameSnapshotPhotos = snapshotPhotos.map(photo => photo.name);
 
+                                    //check which photos that are the last ones and save them for deleting
                                     const spreaded = [...photoCopies, ...snapshotPhotos];
                                     const lastPhotos = spreaded.filter(el => {
                                         return !(namePhotoCopies.includes(el.name) && nameSnapshotPhotos.includes(el.name));
                                     });
-                                    
-                                    if(lastPhotos.length === 0) {
-                                        console.log('dont want to delete a thing from storage');
-                                        return;
-                                    }
 
                                     //delete the photos in the album in storage
                                     const promises = lastPhotos.map(async photo => {
@@ -85,21 +83,20 @@ const Albums = () => {
                                     Promise.all(promises).then(() => {
                                         console.log('everything deleted!');
                                     }).catch(error => {
-                                        console.log(error);
+                                        setError(error.message);
                                     }) 
                 
                                 }).catch(error => {
-                                    console.log(error);
+                                    setError(error.message);
                                 })  
                                 
                             })
                         }).catch(error => {
-                            console.log(error.message);
-                        
+                            setError(error.message);
                         }); 
 
         } catch (error) {
-            console.log(error.message);
+            setError(error.message);
         }
 
     }
@@ -107,6 +104,8 @@ const Albums = () => {
     return (  
         <div>
             <h1 className="text-center albums">Mina album</h1>
+
+            { error && (<Alert variant="danger">{error}</Alert>) }
 
             {
                 loading

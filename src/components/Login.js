@@ -7,12 +7,12 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faUnlockAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const emailRef = useRef();
     const passwordRef = useRef();
     const [error, setError ] = useState(null);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,8 +22,8 @@ const Login = () => {
             await login(emailRef.current.value, passwordRef.current.value);
             navigate('/');
         } catch (error) {
-            setError(error.message)
-			setLoading(false)
+            setError(error.message);
+			setLoading(false);
         }
     }
 
@@ -62,9 +62,6 @@ const Login = () => {
                             <p>Har du inget ett konto? <Link to="/signup">Skapa konto</Link></p>
                         </Card.Body>
                     </Card>
-                    <div className="text-center mt-2">
-                        
-                    </div>
                 </Col>
             </Row>
         </div>

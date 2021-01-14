@@ -12,8 +12,7 @@ const AuthContextProvider = (props) => {
     const [currentUser, setCurrentUser ] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const signUp = (name, email, password) => {
-        console.log(`Email ${email} and Password ${password}`);
+    const signUp = (email, password) => {
         return auth.createUserWithEmailAndPassword(email, password)
     }
 
@@ -44,7 +43,7 @@ const AuthContextProvider = (props) => {
 
     return (
         <AuthContext.Provider value={values}>
-        {loading && (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)}
+            {loading && (<div className="d-flex justify-content-center my-5"><FadeLoader color={'#576675'} size={50}/></div>)}
             {!loading && props.children}
         </AuthContext.Provider>
     )
