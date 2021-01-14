@@ -39,7 +39,6 @@ const CustomerAlbum = () => {
     const handleSubmitToPreview = () => {
 
         const likedImages = reviewedPhotos.filter(photo =>{
-            console.log('this is photo.review', photo.review);
             return photo.review === 'like';
         });
 
@@ -49,7 +48,6 @@ const CustomerAlbum = () => {
         }
 
         const dislikedImages = reviewedPhotos.filter(photo =>{
-            console.log('inside filter dislike, this is photo', photo);
             return photo.review === 'dislike';
         })
 
