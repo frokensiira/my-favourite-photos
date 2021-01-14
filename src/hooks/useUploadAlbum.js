@@ -21,14 +21,12 @@ const useUploadAlbum = (albumTitle, uploadedFiles, submit) => {
             owner: currentUser.uid,
         }
 
-        const albumRef = storage.ref(`${albumTitle}`);
-
         const promises = uploadedFiles.map(async uploadedFile => {
             setLoading(true);
 
             try {
 
-                const fileRef = albumRef.child(`/${uploadedFile.name}`);
+                const fileRef = storage.ref(`images/${currentUser.uid}/${uploadedFile.name}`);
                 const snapshot = await fileRef.put(uploadedFile);    
                 
                 const url = await snapshot.ref.getDownloadURL();

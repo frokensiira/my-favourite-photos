@@ -3,11 +3,13 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import useAlbums from '../hooks/useAlbums';
 import { Link } from 'react-router-dom';
 import { db, storage } from '../firebase';
-import albumImage from '../assets/image.png'
+import albumImage from '../assets/image.png';
+import { useAuth } from '../contexts/AuthContext';
 
 const Albums = () => {
 
     const { albums, loading } = useAlbums();
+    const { currentUser } = useAuth();
 
     const handleDeleteAlbum = async (e) => {
 
@@ -16,43 +18,47 @@ const Albums = () => {
             const doc = await db.collection('albums').doc(e.target.id).get();
 
             const snapshotPhotos = [];
-            db.collection('photos').where('albumTitle', '==', doc.data().albumTitle).get()
-                .then(function(querySnapshot) {
 
-                    const batch = db.batch();
+            db.collection('photos')
+                .where('albumTitle', '==', doc.data().albumTitle)
+                .where('owner', '==', currentUser.uid)
+                .get()
+                    .then(function(querySnapshot) {
 
-                    querySnapshot.forEach(function(doc) {
+                        const batch = db.batch();
 
-                        snapshotPhotos.push({
-                            ...doc.data()
+                        querySnapshot.forEach(function(doc) {
+
+                            snapshotPhotos.push({
+                                ...doc.data()
+                            });
+                            batch.delete(doc.ref);
                         });
-                        batch.delete(doc.ref);
-                    });
 
-                    // Commit the batch
-                    return batch.commit();
-                })
-                    .then(function() {
-
-                        //delete album from db
-                        db.collection('albums').doc(e.target.id).delete().then(() => {
-                            
-                            //delete the photos in the album in storage
-                            const promises = snapshotPhotos.map(async photo => {
-                                const result = await storage.ref(photo.path).delete()
-                                return new Promise((resolve, reject) => {resolve(result)})
-                            })
-
-                            Promise.all(promises).then(() => {
-                                console.log('everything deleted!');
-                            }).catch(error => {
-
-                        })     
-                    }).catch(error => {
-                        console.log(error.message);
+                        // Commit the batch
+                        batch.commit();
                     })
-                    
-                }); 
+                        .then(function() {
+
+                            //delete album from db
+                            db.collection('albums').doc(e.target.id).delete().then(() => {
+                                
+                                //delete the photos in the album in storage
+                                const promises = snapshotPhotos.map(async photo => {
+                                    const result = await storage.ref(photo.path).delete()
+                                    return new Promise((resolve, reject) => {resolve(result)})
+                                })
+
+                                Promise.all(promises).then(() => {
+                                    console.log('everything deleted!');
+                                }).catch(error => {
+
+                                })     
+                            })
+                        }).catch(error => {
+                            console.log(error.message);
+                        
+                        }); 
 
         } catch (error) {
             console.log(error.message);

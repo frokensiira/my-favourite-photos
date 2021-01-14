@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 
 const useAlbums = () => {
-
+    console.log('inside useAlbums');
     const [loading, setLoading] = useState(true);
     const [albums, setAlbums] = useState([]);
     const { currentUser } = useAuth();
@@ -24,8 +24,8 @@ const useAlbums = () => {
                     });
                 });
 
-                setAlbums(snapshotAlbums);
                 setLoading(false);
+                setAlbums(snapshotAlbums);
         });
 
         return unsubscribe;
