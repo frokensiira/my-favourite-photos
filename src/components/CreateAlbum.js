@@ -90,7 +90,7 @@ const CreateAlbum = () => {
                                 } 
 
                                 <div className="text-center">
-                                    <Button disabled={loading} type="submit" className="px-5">Skapa album</Button>
+                                    <Button disabled={loading} type="submit" className="px-5 btn-green">Skapa album</Button>
                                 </div>
                         </Form>
                     </Col>

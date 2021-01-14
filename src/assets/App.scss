@@ -23,10 +23,6 @@ body:after {
 }
 
 .bg-card-login {
-    /* position: absolute;
-    top: 50%;
-    left: 50%; */
-    /* transform: translate(-50%, -50%); */
     text-align: center;
     padding: 60px 32px;
     background: rgba(255,255,255,0.04);
@@ -58,8 +54,16 @@ body:after {
     font-family: 'Poppins', sans-serif;
 }
 
-.btn-user {
+.btn-user, .btn-blue {
     background-color: #2691d9;
+}
+
+.btn-green {
+    background-color: #416E4B;
+}
+
+.btn-brownred {
+    background-color: #A16F73;
 }
 
 .home, .albums, .album, .edit-album {
@@ -72,8 +76,10 @@ body:after {
 
 #dropzone-wrapper {
     background-color: #d8e5e2;
+    background-color: #F0F0F0;
     border-radius: 4px;
-    border: 2px dashed #eee;
+    border: 1px dashed #eee;
+    color: white;
     color: black;
     font-weight: 600;
 

@@ -167,29 +167,22 @@ const Album = () => {
                 {
                     photos.length !== 0 && (
                         <Row>
-                    <Col md={{ span: 6, offset: 3}}>
-                        <Form>
-                            <Form.Group as={Row}>
-                                <Form.Label className="album">Ange albumets titel:</Form.Label>
-                                <Col>
-                                    <Form.Control type="name" placeholder="Titel" value={newAlbumTitle} onChange={handleInputChange}/>
-                                
-                                </Col>
-                                <Col>
-                                    <Button variant="primary" disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
-                                </Col>
-                            </Form.Group>
-                        </Form>
-                    </Col>
-                </Row>
+                            <Col md={{ span: 6, offset: 3}}>
+                                <Form>
+                                    <Form.Group as={Row}>
+                                        <Form.Control type="name" placeholder="Albumtitel" value={newAlbumTitle} onChange={handleInputChange}/>
+                                    
+                                        <Button className="btn-green" disabled={pickedPhotos.length === 0} onClick={handleSubmit}>Skapa nytt album</Button>
+                                    </Form.Group>
+                                </Form>
+                            </Col>
+                        </Row>
                     )
                 }
                 
                 <Row>
                     <Col md={{ span: 6, offset: 3}}>
-                        <Form>
                             <Button className="my-4" variant="outline-warning" onClick={handleEditAlbum}>Redigera album</Button>
-                        </Form>
                     </Col>
                 </Row>  
                 

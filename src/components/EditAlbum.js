@@ -5,7 +5,8 @@ import { useDropzone } from 'react-dropzone';
 import { useState, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SRLWrapper } from 'simple-react-lightbox';
-import Photo from './Photo';
+//import Photo from './Photo';
+import EditAlbumPhoto from './EditAlbumPhoto';
 
 const EditAlbum = () => {
     const navigate = useNavigate();
@@ -140,7 +141,7 @@ const EditAlbum = () => {
             <SRLWrapper>
                 <Row className="mb-5">
                     {state.photos.map(photo => (
-                        <Photo photo={photo} key={photo.id}/>
+                        <EditAlbumPhoto photo={photo} key={photo.id}/>
                     ))}
                 </Row>
             </SRLWrapper>
