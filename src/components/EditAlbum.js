@@ -88,7 +88,7 @@ const EditAlbum = () => {
             return;
         }
        
-        setUploadedFiles(files => [...files, acceptedFiles[0]]);
+        setUploadedFiles(acceptedFiles);
 
     }, []);
 

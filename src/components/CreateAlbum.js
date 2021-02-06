@@ -32,8 +32,8 @@ const CreateAlbum = () => {
         if(acceptedFiles.length === 0){
             return;
         }
-       
-        setUploadedFiles(files => [...files, acceptedFiles[0]]);
+
+        setUploadedFiles(acceptedFiles);
 
     }, []);
 
@@ -76,18 +76,18 @@ const CreateAlbum = () => {
                             </Form.Group>
 
                             {
-                                    uploadedFiles && uploadedFiles.length !== 0 && (
-                                        <div className="accepted-files mt-2">
-                                            <ul className="list-unstyled">
-                                                {uploadedFiles.map(file => (
-                                                    <li key={file.name}>
-                                                        {file.name}
-                                                    </li>
-                                                ))}
-                                            </ul>   
-                                        </div>
-                                    )
-                                } 
+                                uploadedFiles && uploadedFiles.length !== 0 && (
+                                    <div className="accepted-files mt-2">
+                                        <ul className="list-unstyled">
+                                            {uploadedFiles.map(file => (
+                                                <li key={file.name}>
+                                                    {file.name}
+                                                </li>
+                                            ))}
+                                        </ul>   
+                                    </div>
+                                )
+                            } 
 
                                 <div className="text-center">
                                     <Button disabled={loading} type="submit" className="px-5 btn-green">Skapa album</Button>
